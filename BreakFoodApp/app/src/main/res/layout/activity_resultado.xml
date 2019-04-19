@@ -6,4 +6,45 @@
     android:layout_height="match_parent"
     tools:context="com.example.sergio.breakfoodapp.ResultadoActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="273dp">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <ImageView
+            android:id="@+id/resultado_buscar_icono_Button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignTop="@+id/container"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/boton_redondo"
+            android:onClick="search"
+            android:src="@drawable/ic_search_black_24dp"
+            android:tint="@android:color/background_light" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignBottom="@+id/container"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/boton_redondo"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:text="Ver en modo lista"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
