@@ -90,17 +90,30 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
                                         ResultadoActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
                         //Marker
-                        GeoJsonSource geoJsonSource = new GeoJsonSource("LOOOOOL", Feature.fromGeometry(
-                                Point.fromLngLat(longitude,latitude)));
+                        GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
+                                Point.fromLngLat(-84.0908232,9.9561258)));
                         style.addSource(geoJsonSource);
-                        //TODO: add "ver más" onClickListener
-                        //TODO: loop for markers
-                        //TODO: assign different IDs
 
                         SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
                         symbolLayer.withProperties(
                                 PropertyFactory.iconImage("marker-icon-id")
                         );
+                        style.addLayer(symbolLayer);
+
+                        //Se annadió elemento
+
+                        GeoJsonSource rostipollo = new GeoJsonSource("rostipollo", Feature.fromGeometry(
+                                Point.fromLngLat(-84.0916764,9.9564563)));
+                        style.addSource(rostipollo);
+
+                        symbolLayer = new SymbolLayer("layer-id2", "rostipollo");
+                        symbolLayer.withProperties(
+                                PropertyFactory.iconImage("marker-icon-id")
+                        );
+
+                        //TODO: add "ver más" onClickListener
+                        //TODO: loop for markers
+
                         style.addLayer(symbolLayer);
                     }
                 });
