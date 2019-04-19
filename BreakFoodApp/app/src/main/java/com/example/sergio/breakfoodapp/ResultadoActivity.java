@@ -2,6 +2,7 @@ package com.example.sergio.breakfoodapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -140,4 +142,17 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
             finish();
         }
     }
+
+    public void search(View view){
+        //Crea el intent (nueva ventana)
+        Intent newScreen = new Intent(getApplicationContext(), BuscadorActivity.class);
+        //Inicia la nueva ventana
+        startActivity(newScreen);
+    }
+
+    public void getListView(View view){
+        //TODO: abrir vista en lista, pasando la lista de restaurantes....
+    }
+
+
 }
