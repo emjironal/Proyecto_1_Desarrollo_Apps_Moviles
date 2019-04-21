@@ -18,6 +18,8 @@ begin
 exception
 	when unique_violation then
 		raise exception 'Error: restaurante ya existe';
+	when others then
+		raise exception 'Error al ejecutar la funcion';
 end$$;
 
 create or replace function calificarRestaurante(
@@ -45,4 +47,39 @@ begin
 			where idRestaurant = _idRestaurant;
 	end if;
 	return (select 1);
+exception
+	when others then
+		raise exception 'Error al ejecutar la funcion';	
 end$$;
+/*
+create or replace function eliminarUsuario(
+	_username varchar(50)
+) returns refcursor
+language plpgsql as $$
+declare
+	_idUser int;
+begin
+	select idUser into _idUser from Usertable where username = _username;
+	delete from Comment where idUser = _idUser;
+	delete from 
+	return (select 1);
+exception
+	when others then
+		raise exception 'Error al ejecutar la funcion';	
+end $$;*/
+
+create or replace function eliminarRestaurante(
+	_idRestaurant int
+) returns refcursor
+language plpgsql as $$
+begin
+	delete from Comment where idRestaurant = _idRestaurant;
+	delete from Picture where idRestaurant = _idRestaurant;
+	delete from LineScore l where l.idScore in (select s.idScore from Score s where idRestaurant = _idRestaurant);
+	delete from Score where idRestaurant = _idRestaurant;
+	delete from Restaurant where idRestaurant = _idRestaurant;
+	return (select 1);
+exception
+	when others then
+		raise exception 'Error al ejecutar la funcion';	
+end $$;
