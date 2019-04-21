@@ -89,6 +89,23 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
                                 BitmapFactory.decodeResource(
                                         ResultadoActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
+                        /*
+                        GeoJsonSource restaurante;
+                        SymbolLayer symbolLayer;
+                        for(int i: new int[6]){
+                            GeoJsonSource restaurante = new GeoJsonSource("res" + i, Feature.fromGeometry(
+                                Point.fromLngLat(-84.0916764,9.9564563)));
+                            style.addSource(rostipollo);
+
+                            symbolLayer = new SymbolLayer("layer-id" + i, "res" + i);
+                            symbolLayer.withProperties(
+                                    PropertyFactory.iconImage("marker-icon-id"),
+                                    PropertyFactory.textField("Rostipollos") //nombre del label
+                            );
+                            style.addLayer(symbolLayer);
+                        }
+                        */
+
                         //Marker
                         GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
                                 Point.fromLngLat(-84.0908232,9.9561258)));
@@ -108,7 +125,10 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
 
                         symbolLayer = new SymbolLayer("layer-id2", "rostipollo");
                         symbolLayer.withProperties(
-                                PropertyFactory.iconImage("marker-icon-id")
+                                PropertyFactory.iconImage("marker-icon-id"),
+                                PropertyFactory.textField("Rostipollos"),
+                                //nombre del label
+                                PropertyFactory.iconAllowOverlap(true)
                         );
 
                         //TODO: add "ver más" onClickListener
