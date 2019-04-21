@@ -8,10 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.example.sergio.breakfoodapp.R;
+
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
-
-
-
 
     @NonNull
     @Override
@@ -36,6 +35,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
+            localImage = itemView.findViewById(R.id.restaurant_item_image);
+            name = itemView.findViewById(R.id.restaurant_item_name);
+            distance = itemView.findViewById(R.id.restaurant_item_distance);
+            contactText = itemView.findViewById(R.id.restaurant_item_contact);
+            expense = itemView.findViewById(R.id.restaurant_item_price_range);
+
         }
     }
 

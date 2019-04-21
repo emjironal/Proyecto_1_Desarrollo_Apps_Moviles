@@ -1,4 +1,4 @@
-package com.example.sergio.breakfoodapp;
+package com.example.sergio.breakfoodapp.http;
 
 import android.util.Log;
 
