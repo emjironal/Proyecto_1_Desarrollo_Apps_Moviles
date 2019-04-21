@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:cardCornerRadius="5dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="12dp">
 
         <LinearLayout
@@ -48,13 +48,14 @@
                     android:id="@+id/comment_content"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:layout_below="@+id/comment_owner"
-                    android:layout_marginStart="17dp"
+                    android:layout_below="@+id/comment_writer"
+                    android:layout_marginStart="22dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="17dp"
                     android:layout_toEndOf="@+id/restaurant_item_image"
-                    android:textColor="@android:color/black"
-                    android:hint="Escriba un comentario" />
+                    android:focusedByDefault="false"
+                    android:hint="Escriba un comentario"
+                    android:textColor="@android:color/black" />
 
 
             </RelativeLayout>

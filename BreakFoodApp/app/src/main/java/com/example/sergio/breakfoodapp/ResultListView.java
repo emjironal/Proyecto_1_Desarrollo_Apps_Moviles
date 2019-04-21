@@ -43,6 +43,7 @@ public class ResultListView extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 r1 = new Restaurant();
                 JSONObject restaurant = jsonArray.getJSONObject(i);
+                r1.setId(restaurant.getInt("idrestaurant"));
                 r1.setName(restaurant.getString("name"));
                 r1.setLat(restaurant.getDouble("latitudepos"));
                 r1.setLongitude(restaurant.getDouble("longitudepos"));

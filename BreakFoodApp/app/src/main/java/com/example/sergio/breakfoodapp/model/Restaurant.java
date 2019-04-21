@@ -1,12 +1,10 @@
 package com.example.sergio.breakfoodapp.model;
 
-import java.util.Date;
-
 public class Restaurant {
 
     private String name;
     private double lat, longitude;
-    private int score;
+    private double score;
     private int id;
     private String foodType;
     private String price;
@@ -48,11 +46,11 @@ public class Restaurant {
         this.longitude = longitude;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 

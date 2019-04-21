@@ -2,9 +2,11 @@ package com.example.sergio.breakfoodapp.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.example.sergio.breakfoodapp.R;
+import com.example.sergio.breakfoodapp.SelectedRestaurantActivity;
 import com.example.sergio.breakfoodapp.model.DistanceManager;
 import com.example.sergio.breakfoodapp.model.Restaurant;
 
@@ -45,7 +48,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int i) {
-        Restaurant currentRestaurant = restaurantList.get(i);
+        final Restaurant currentRestaurant = restaurantList.get(i);
         restaurantViewHolder.name.setText(currentRestaurant.getName());
         restaurantViewHolder.expense.setText("$");
 
@@ -71,11 +74,19 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 break;
             }
             default:
-                pricePoint = "undified";
+                pricePoint = "undefined";
         }
         restaurantViewHolder.expense.setText(pricePoint);
         restaurantViewHolder.contactText.setText(String.format("%s - %s",currentRestaurant.getOpen(), currentRestaurant.getClose()));
         restaurantViewHolder.distance.setText(currentRestaurant.getFoodType());
+        restaurantViewHolder.localImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, SelectedRestaurantActivity.class);
+                i.putExtra("idrestaurant", currentRestaurant.getId());
+                context.startActivity(i);
+            }
+        });
 
         double distance = DistanceManager.distance(latitude, longitude, currentRestaurant.getLat(), currentRestaurant.getLongitude());
 
