@@ -22,60 +22,66 @@
 
                 <ImageView
                     android:id="@+id/restaurant_item_image"
-                    android:layout_width="135dp"
-                    android:layout_height="135dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:src="@drawable/res_placeholder"/>
+                    android:src="@drawable/ic_account_circle_black_24dp" />
 
                 <TextView
-                    android:id="@+id/restaurant_item_name"
+                    android:id="@+id/comment_writer"
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@+id/restaurant_item_image"
-                    android:text="McDonald's"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:text="user email"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"/>
 
-                <TextView
-                    android:id="@+id/restaurant_item_price_range"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/restaurant_item_name"
+                <EditText
+                    android:id="@+id/comment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/comment_owner"
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="17dp"
                     android:layout_toEndOf="@+id/restaurant_item_image"
-                    android:text="$$" />
-
-                <TextView
-                    android:id="@+id/restaurant_item_contact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/restaurant_item_price_range"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_toEndOf="@+id/restaurant_item_image"
-                    android:text="2222-2222" />
+                    android:textColor="@android:color/black"
+                    android:hint="Escriba un comentario" />
 
 
             </RelativeLayout>
 
-
-            <TextView
-                android:id="@+id/restaurant_item_distance"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0.25 KM"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:background="@color/colorAccent"
-                android:textColor="@android:color/background_light"/>
+                android:orientation="horizontal"
+                android:gravity="right">
+
+                <TextView
+                    android:id="@+id/comment_submit"
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:text="Subir comentario"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@android:color/background_light"
+                    android:background="@drawable/boton_redondo"
+                    />
+
+
+            </LinearLayout>
+
+
+
+
 
         </LinearLayout>
 

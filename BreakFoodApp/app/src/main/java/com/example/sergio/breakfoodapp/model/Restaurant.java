@@ -8,11 +8,21 @@ public class Restaurant {
     private double lat, longitude;
     private int score;
     private int id;
-    private String foddType;
+    private String foodType;
     private String price;
-    private Date open;
-    private Date close;
+    private String open;
+    private String close;
 
+
+    public Restaurant() {
+    }
+
+    public Restaurant(String name, double lat, double longitude, String price) {
+        this.name = name;
+        this.lat = lat;
+        this.longitude = longitude;
+        this.price = price;
+    }
 
     public String getName() {
         return name;
@@ -54,12 +64,12 @@ public class Restaurant {
         this.id = id;
     }
 
-    public String getFoddType() {
-        return foddType;
+    public String getFoodType() {
+        return foodType;
     }
 
-    public void setFoddType(String foddType) {
-        this.foddType = foddType;
+    public void setFoodType(String foodType) {
+        this.foodType = foodType;
     }
 
     public String getPrice() {
@@ -70,19 +80,19 @@ public class Restaurant {
         this.price = price;
     }
 
-    public Date getOpen() {
+    public String getOpen() {
         return open;
     }
 
-    public void setOpen(Date open) {
+    public void setOpen(String open) {
         this.open = open;
     }
 
-    public Date getClose() {
+    public String getClose() {
         return close;
     }
 
-    public void setClose(Date close) {
+    public void setClose(String close) {
         this.close = close;
     }
 }

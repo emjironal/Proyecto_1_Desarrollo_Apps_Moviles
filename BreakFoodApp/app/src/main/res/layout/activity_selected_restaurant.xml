@@ -6,4 +6,198 @@
     android:layout_height="match_parent"
     tools:context=".SelectedRestaurantActivity">
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/restaurant_profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="right|center_vertical"
+            android:text="McDonald's  "
+            android:textColor="@android:color/background_light"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/restaurant_profile_starcontainer"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/restaurant_profile_name"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="180dp"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/restaurant_profile_star1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:tag="1"
+                android:src="@drawable/ic_star_border_yellow_24dp"/>
+
+            <ImageView
+                android:id="@+id/restaurant_profile_star2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:tag="2"
+                android:src="@drawable/ic_star_border_yellow_24dp"/>
+            <ImageView
+                android:id="@+id/restaurant_profile_star3"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:tag="3"
+                android:src="@drawable/ic_star_border_yellow_24dp"/>
+            <ImageView
+                android:id="@+id/restaurant_profile_star4"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:tag="4"
+                android:src="@drawable/ic_star_border_yellow_24dp"/>
+            <ImageView
+                android:id="@+id/restaurant_profile_star5"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:tag="5"
+                android:src="@drawable/ic_star_border_yellow_24dp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="19dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@+id/restaurant_profile_starcontainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contacto"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="15dp"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp"
+                    android:text="Teléfono: "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp"
+                    android:text="Correo: "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp"
+                    android:text="Página web: "/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Horario: "
+                    android:layout_marginStart="15dp"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/restaurant_profile_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="07:00 - 19:00"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de comida: "
+                    android:layout_marginStart="15dp"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/restaurant_profile_foodType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="Casera"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:text="Comentarios"
+                android:gravity="center"
+                android:textSize="30sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/boton_redondo"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="20sp"
+                android:text="Ver todos los comentarios"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:onClick="getAllCommments"/>
+
+            <include layout="@layout/comment_edit_text_layout"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
