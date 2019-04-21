@@ -28,9 +28,11 @@ create table Usertable(
 	username varchar(50),
 	password varchar(50),
 	type varchar(13),
+	email varchar(100),
 	constraint User_idUser_pk primary key (idUser),
 	constraint User_type_ck check (type = 'normal' or type = 'administrator'),
-	constraint User_username unique (username)
+	constraint User_username unique (username),
+	constraint User_email_un unique (email)
 );
 
 create table Restaurant(
