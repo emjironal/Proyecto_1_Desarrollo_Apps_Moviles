@@ -1,10 +1,12 @@
 package com.example.sergio.breakfoodapp;
 
 import android.content.Entity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
@@ -23,6 +25,7 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
 
 
     int idrestaurant;
+    String restName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,28 +61,80 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        restName = r1.getName();
+
 
         TextView name = findViewById(R.id.restaurant_profile_name);
         TextView schedule = findViewById(R.id.restaurant_profile_schedule);
         TextView foodType = findViewById(R.id.restaurant_profile_foodType);
         TextView priceRange = findViewById(R.id.restaurant_profile_price_point);
+        TextView score = findViewById(R.id.restaurant_profile_scorenumber);
 
         name.setText(r1.getName());
         schedule.setText(String.format("%s - %s",r1.getOpen(), r1.getClose()));
         foodType.setText(r1.getFoodType());
         priceRange.setText(r1.getPrice());
+        score.setText(String.format("%.2f", r1.getScore()));
 
-
-        //TODO: cargar puntaje
 
     }
 
     public void getAllCommments(View view) {
-        //TODO: abre activity con todos los comentarios
+        Intent i = new Intent(getApplicationContext(), CommentSectionActivity.class);
+        i.putExtra("idrestaurant", idrestaurant);
+        i.putExtra("restName",restName);
+        startActivity(i);
+    }
 
+
+    public void submitScore(View view) {
+
+        String n =  (String) view.getTag();
+        int number = Integer.parseInt(n);
+        switch (number){
+            case 1:{
+                ((ImageView) findViewById(R.id.restaurant_profile_star1)).setImageResource(R.drawable.ic_star_yellow_24dp);
+            }
+            break;
+            case 2:{
+                ((ImageView) findViewById(R.id.restaurant_profile_star1)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star2)).setImageResource(R.drawable.ic_star_yellow_24dp);
+            }
+            break;
+            case 3:{
+                ((ImageView) findViewById(R.id.restaurant_profile_star1)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star2)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star3)).setImageResource(R.drawable.ic_star_yellow_24dp);
+            }
+            break;
+            case 4:{
+                ((ImageView) findViewById(R.id.restaurant_profile_star1)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star2)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star3)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star4)).setImageResource(R.drawable.ic_star_yellow_24dp);
+            }
+            break;
+            default:
+                ((ImageView) findViewById(R.id.restaurant_profile_star1)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star2)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star3)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star4)).setImageResource(R.drawable.ic_star_yellow_24dp);
+                ((ImageView) findViewById(R.id.restaurant_profile_star5)).setImageResource(R.drawable.ic_star_yellow_24dp);
+
+        }
+
+        findViewById(R.id.restaurant_profile_star1).setClickable(false);
+        findViewById(R.id.restaurant_profile_star2).setClickable(false);
+        findViewById(R.id.restaurant_profile_star3).setClickable(false);
+        findViewById(R.id.restaurant_profile_star4).setClickable(false);
+        findViewById(R.id.restaurant_profile_star5).setClickable(false);
+        //TODO: enviar score
 
     }
 
+    private void submitComment(String content, String owner, String dateTime){
+
+    }
 
 
 }

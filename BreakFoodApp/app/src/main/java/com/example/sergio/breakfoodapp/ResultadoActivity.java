@@ -130,6 +130,7 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
                             symbolLayer = new SymbolLayer("layer-id" + r.getId(), "res" + r.getId());
                             symbolLayer.withProperties(
                                     PropertyFactory.iconImage("marker-icon-id"),
+                                    PropertyFactory.iconAllowOverlap(true),
                                     PropertyFactory.textField(r.getName()) //nombre del label
                             );
                             style.addLayer(symbolLayer);
@@ -167,7 +168,6 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
                         */
 
                         //TODO: add "ver más" onClickListener
-                        //TODO: loop for markers
 
                         //style.addLayer(symbolLayer);
                     }

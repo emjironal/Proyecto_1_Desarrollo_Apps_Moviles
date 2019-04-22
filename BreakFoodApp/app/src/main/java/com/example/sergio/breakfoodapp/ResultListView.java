@@ -51,6 +51,7 @@ public class ResultListView extends AppCompatActivity {
                 r1.setOpen(restaurant.getString("open"));
                 r1.setClose(restaurant.getString("close"));
                 r1.setFoodType(restaurant.getString("foodtype"));
+                r1.setScore(restaurant.getDouble("realscore"));
                 restaurantList.add(r1);
             }
         }catch (Exception e){

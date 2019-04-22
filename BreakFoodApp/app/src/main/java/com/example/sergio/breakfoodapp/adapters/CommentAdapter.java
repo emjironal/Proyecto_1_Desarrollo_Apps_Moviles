@@ -23,10 +23,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public CommentAdapter() {
     }
 
-    public CommentAdapter(List<Comment> comments, Context context, View view) {
+    public CommentAdapter(List<Comment> comments, Context context) {
         this.comments = comments;
         this.context = context;
-        this.view = view;
     }
 
     @NonNull
@@ -41,7 +40,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Comment currentComment = comments.get(i);
         commentViewHolder.username.setText(currentComment.getOwner());
         commentViewHolder.content.setText(currentComment.getContent());
-        commentViewHolder.date.setText(currentComment.getPublishDate().toString());
+        //commentViewHolder.date.setText(currentComment.getPublishDate().toString());
     }
 
     @Override

@@ -26,7 +26,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnFacebook;
     private TextView txtSignUp, txtRecuperar;
 
-
+    //TODO: Agregar pantalla nuevo restaurante
+    //TODO: Agregar LocatioPicker para esa pantalla
+    //TODO: Agregar pantalla editar restaurante
+    //TODO: Agregar Pantalla de imagenes
+    //TODO: Agregar Pantalla de agregar imágenes
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
