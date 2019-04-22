@@ -6,23 +6,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.example.sergio.breakfoodapp.R;
-import com.example.sergio.breakfoodapp.SelectedRestaurantActivity;
+import com.example.sergio.breakfoodapp.restaurant.SelectedRestaurantActivity;
 import com.example.sergio.breakfoodapp.model.DistanceManager;
 import com.example.sergio.breakfoodapp.model.Restaurant;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 

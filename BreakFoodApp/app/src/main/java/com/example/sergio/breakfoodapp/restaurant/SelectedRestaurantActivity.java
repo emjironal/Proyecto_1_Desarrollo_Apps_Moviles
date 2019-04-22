@@ -1,14 +1,13 @@
-package com.example.sergio.breakfoodapp;
+package com.example.sergio.breakfoodapp.restaurant;
 
-import android.content.Entity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.model.Restaurant;
@@ -77,6 +76,10 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
         score.setText(String.format("%.2f", r1.getScore()));
 
 
+        //TODO: importar una imagen
+        //TODO: obtener puntuación dada a este restaurante
+
+
     }
 
     public void getAllCommments(View view) {
@@ -137,4 +140,12 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
     }
 
 
+    public void openGallery(View view) {
+
+        Intent i = new Intent(getApplicationContext(), RestaurantGalleryActivity.class);
+        i.putExtra("idrestaurant", idrestaurant);
+        i.putExtra("restName",restName);
+        startActivity(i);
+
+    }
 }

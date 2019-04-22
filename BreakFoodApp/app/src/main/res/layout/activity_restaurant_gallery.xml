@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".restaurant.CommentSectionActivity">
+    tools:context=".restaurant.RestaurantGalleryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/comment_section_rest_name"
+            android:id="@+id/gallery_rest_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/background_light"
@@ -23,18 +23,20 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/comment_section_recycler_view"
+            android:id="@+id/gallery_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <include
-            android:id="@+id/comment_edit_text"
-            layout="@layout/comment_edit_text_layout"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Añadir imagenes"
+            android:background="@drawable/boton_redondo"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"/>
 
 
 
     </LinearLayout>
-
-
 
 </android.support.constraint.ConstraintLayout>

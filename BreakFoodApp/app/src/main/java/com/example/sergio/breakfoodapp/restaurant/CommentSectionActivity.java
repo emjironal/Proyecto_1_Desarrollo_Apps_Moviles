@@ -1,4 +1,4 @@
-package com.example.sergio.breakfoodapp;
+package com.example.sergio.breakfoodapp.restaurant;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.adapters.CommentAdapter;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
