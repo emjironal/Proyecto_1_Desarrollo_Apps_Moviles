@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sergio.breakfoodapp.Controller;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
@@ -80,6 +82,15 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
         //TODO: obtener puntuación dada a este restaurante
 
 
+        final View commentLayout = findViewById(R.id.restaurant_profile_comment_layout);
+        commentLayout.findViewById(R.id.comment_submit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitComment(((EditText)commentLayout.findViewById(R.id.comment_content_edit_text)).getText().toString(), Controller.getInstance().getUserID());
+            }
+        });
+
+
     }
 
     public void getAllCommments(View view) {
@@ -135,7 +146,18 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
 
     }
 
-    private void submitComment(String content, String owner, String dateTime){
+    private void submitScore(int n){
+        //TODO: enviar score, iduser, idrestaurant
+    }
+
+
+    private void submitComment(String content, int ownerID){
+        String url = "https://appetyte.herokuapp.com/android/comentar";
+        List<NameValuePair> comment = new ArrayList<>();
+        comment.add(new BasicNameValuePair("idrestaurant", ""+idrestaurant));
+        comment.add(new BasicNameValuePair("content",content));
+        comment.add(new BasicNameValuePair("iduser", "" + ownerID));
+        String result = LectorHttpResponse.leer(GestorPostRequest.postData(url, comment));
 
     }
 

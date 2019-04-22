@@ -250,7 +250,9 @@
                     android:gravity="center"
                     android:onClick="getAllCommments"/>
 
-                <include layout="@layout/comment_edit_text_layout"/>
+                <include
+                    android:id="@+id/restaurant_profile_comment_layout"
+                    layout="@layout/comment_edit_text_layout"/>
 
 
             </LinearLayout>
