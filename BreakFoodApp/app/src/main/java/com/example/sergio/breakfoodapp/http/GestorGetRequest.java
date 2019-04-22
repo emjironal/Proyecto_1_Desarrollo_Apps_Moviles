@@ -1,4 +1,4 @@
-package com.example.sergio.breakfoodapp;
+package com.example.sergio.breakfoodapp.http;
 
 import android.support.annotation.Nullable;
 import android.util.Log;

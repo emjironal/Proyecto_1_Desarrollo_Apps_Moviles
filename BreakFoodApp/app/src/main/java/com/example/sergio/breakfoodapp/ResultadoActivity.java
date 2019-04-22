@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.sergio.breakfoodapp.http.GestorGetRequest;
+import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.example.sergio.breakfoodapp.model.Restaurant;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
@@ -32,6 +35,10 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResultadoActivity extends AppCompatActivity implements PermissionsListener {
@@ -40,6 +47,7 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
     private PermissionsManager permissionsManager;
     double longitude = 9.8560621;
     double latitude = -83.9112765;
+    List<Restaurant> restaurantList;
 
 
     @Override
@@ -52,6 +60,28 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
         @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
+
+        String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
+        String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));
+        JSONArray jsonArray = new JSONArray();
+        restaurantList = new ArrayList<>();
+        try{
+            jsonArray = new JSONArray(result);
+            Restaurant r1;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                r1 = new Restaurant();
+                JSONObject restaurant = jsonArray.getJSONObject(i);
+                r1.setName(restaurant.getString("name"));
+                r1.setLat(restaurant.getDouble("latitudepos"));
+                r1.setLongitude(restaurant.getDouble("longitudepos"));
+                r1.setPrice(restaurant.getString("price"));
+                r1.setId(restaurant.getInt("idrestaurant"));
+                restaurantList.add(r1);
+            }
+        }catch (Exception ignored){}
+
+
+
 
         // Create supportMapFragment
         SupportMapFragment mapFragment;
@@ -89,7 +119,28 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
                                 BitmapFactory.decodeResource(
                                         ResultadoActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
+
+                        GeoJsonSource restaurante;
+                        SymbolLayer symbolLayer;
+                        for(Restaurant r: restaurantList){
+                            restaurante = new GeoJsonSource("res" + r.getId(), Feature.fromGeometry(
+                                Point.fromLngLat(r.getLongitude(),r.getLat())));
+                            style.addSource(restaurante);
+
+                            symbolLayer = new SymbolLayer("layer-id" + r.getId(), "res" + r.getId());
+                            symbolLayer.withProperties(
+                                    PropertyFactory.iconImage("marker-icon-id"),
+                                    PropertyFactory.textField(r.getName()) //nombre del label
+                            );
+                            style.addLayer(symbolLayer);
+                        }
+
+
+
+
+
                         //Marker
+                        /*
                         GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
                                 Point.fromLngLat(-84.0908232,9.9561258)));
                         style.addSource(geoJsonSource);
@@ -108,13 +159,17 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
 
                         symbolLayer = new SymbolLayer("layer-id2", "rostipollo");
                         symbolLayer.withProperties(
-                                PropertyFactory.iconImage("marker-icon-id")
+                                PropertyFactory.iconImage("marker-icon-id"),
+                                PropertyFactory.textField("Rostipollos"),
+                                //nombre del label
+                                PropertyFactory.iconAllowOverlap(true)
                         );
+                        */
 
                         //TODO: add "ver más" onClickListener
                         //TODO: loop for markers
 
-                        style.addLayer(symbolLayer);
+                        //style.addLayer(symbolLayer);
                     }
                 });
             }
@@ -164,7 +219,11 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
     }
 
     public void getListView(View view){
-        //TODO: abrir vista en lista, pasando la lista de restaurantes....
+
+        Intent listview = new Intent(getApplicationContext(), ResultListView.class);
+        startActivity(listview);
+
+
     }
 
 

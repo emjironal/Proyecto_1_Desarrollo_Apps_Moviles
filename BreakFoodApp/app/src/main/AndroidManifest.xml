@@ -14,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CommentSectionActivity"></activity>
+        <activity android:name=".ResultListView" />
+        <activity android:name=".SelectedRestaurantActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +28,7 @@
         <activity android:name=".BuscadorActivity" />
         <activity android:name=".ResultadoActivity" />
         <activity android:name=".FacebookReActivity" />
-        <activity android:name=".RecuperarActivity"></activity>
+        <activity android:name=".RecuperarActivity" />
     </application>
 
 </manifest>

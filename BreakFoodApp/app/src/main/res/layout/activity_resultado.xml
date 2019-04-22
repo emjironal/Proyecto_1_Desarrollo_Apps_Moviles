@@ -44,6 +44,7 @@
             android:textColor="@android:color/background_light"
             android:textStyle="bold"
             android:gravity="center"
+            android:onClick="getListView"
             />
 
     </RelativeLayout>
