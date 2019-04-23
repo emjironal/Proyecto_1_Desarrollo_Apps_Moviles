@@ -67,14 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         txtRecuperar=(TextView)findViewById(R.id.txtInicioRecuperar);
         txtRecuperar.setOnClickListener(recuperar);
-
-        String url = "http://192.168.0.10:8000/android/login";//cambiar a https://appetyte.herokuapp.com/
-        List<NameValuePair> user = new ArrayList<>();
-        user.add(new BasicNameValuePair("username", "mauri"));
-        user.add(new BasicNameValuePair("password", "1234"));
-        Log.e("Error", LectorHttpResponse.leer(GestorPostRequest.postData(url, user)));
-        url = "http://192.168.0.10:8000/android/getRestaurantes";
-        Log.e("Error", LectorHttpResponse.leer(GestorGetRequest.getData(url)));
     }
 
 

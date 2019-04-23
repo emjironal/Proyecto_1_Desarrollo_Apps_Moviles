@@ -34,7 +34,7 @@ declare
 	_previousScore double precision;
 begin
 	select idScore into _idScore from Score where idRestaurant = _idRestaurant;
-	select count(*) into _yaExisteUser from linescore where idUser = _idUser;
+	select count(*) into _yaExisteUser from linescore where (idScore = _idScore) and (idUser = _idUser);
 	if _yaExisteUser = 0 then
 		insert into linescore (idScore, score, idUser) values(_idScore, _score, _idUser);
 		update Score set totalScore = (totalScore + _score), realScore = ((totalScore + _score) / (countScore + 1)),

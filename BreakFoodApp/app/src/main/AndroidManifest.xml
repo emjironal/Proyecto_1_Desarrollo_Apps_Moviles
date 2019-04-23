@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".restaurant.RestaurantGalleryActivity"></activity>
+        <activity android:name=".AgregarImagenRestaurante"></activity>
+        <activity android:name=".restaurant.RestaurantGalleryActivity" />
         <activity android:name=".restaurant.CommentSectionActivity" />
         <activity android:name=".ResultListView" />
         <activity android:name=".restaurant.SelectedRestaurantActivity" />
