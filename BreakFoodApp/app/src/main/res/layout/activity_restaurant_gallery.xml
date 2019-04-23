@@ -33,7 +33,8 @@
             android:text="Añadir imagenes"
             android:background="@drawable/boton_redondo"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:onClick="addImages"/>
 
 
 
