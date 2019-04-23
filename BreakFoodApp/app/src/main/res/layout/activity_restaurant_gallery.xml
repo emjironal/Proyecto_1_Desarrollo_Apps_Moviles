@@ -6,38 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".restaurant.RestaurantGalleryActivity">
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/gallery_rest_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/background_light"
-            android:background="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="McDonald's"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/gallery_rest_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/background_light"
+                android:background="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="McDonald's"/>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/gallery_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gallery_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Añadir imagenes"
-            android:background="@drawable/boton_redondo"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            android:onClick="addImages"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Añadir imagenes"
+                android:background="@drawable/boton_redondo"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:onClick="addImages"/>
 
 
+        </LinearLayout>
 
-    </LinearLayout>
+
+    </ScrollView>
+
+
 
 </android.support.constraint.ConstraintLayout>

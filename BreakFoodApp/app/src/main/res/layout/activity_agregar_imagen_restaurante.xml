@@ -4,55 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AgregarImagenRestaurante">
+    tools:context=".restaurant.AgregarImagenRestaurante">
 
-    <ImageView
-        android:id="@+id/imgVistaPrevia"
-        android:layout_width="324dp"
-        android:layout_height="255dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.162"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/res_placeholder" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="0dp">
 
-    <Button
-        android:id="@+id/btnAgregarImagen"
-        android:layout_width="171dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="btnAgregaImagenListener"
-        android:text="Agrega imagen"
-        app:layout_constraintBottom_toTopOf="@+id/listViewImagenes"
-        app:layout_constraintEnd_toStartOf="@+id/btnConfirmarSubida"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgVistaPrevia"
-        app:layout_constraintVertical_bias="0.0" />
+        <Button
+            android:id="@+id/btnAgregarImagen"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgVistaPrevia"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="btnAgregaImagenListener"
+            android:text="Agrega imagen"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <ListView
-        android:id="@+id/listViewImagenes"
-        android:layout_width="395dp"
-        android:layout_height="291dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/btnConfirmarSubida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgVistaPrevia"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@id/btnAgregarImagen"
+            android:onClick="btnConfirmarSubidaListener"
+            android:text="Confirmar" />
 
-    <Button
-        android:id="@+id/btnConfirmarSubida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="44dp"
-        android:text="Confirmar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgVistaPrevia"
-        android:onClick="btnConfirmarSubidaListener"/>
+        <ListView
+            android:id="@+id/listViewImagenes"
+            android:layout_width="395dp"
+            android:layout_height="291dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@id/btnConfirmarSubida"/>
+
+        <ImageView
+            android:id="@+id/imgVistaPrevia"
+            android:layout_width="324dp"
+            android:layout_height="255dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.162"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/res_placeholder" />
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -12,4 +12,5 @@
     <string name="inicio_sesi_n">Inicio Sesión</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoidm9sdGF4OTEiLCJhIjoiY2p0dGl3dWl5MWM3dzRlbnNxbzNwNXVuaSJ9.PtCqjIX67ENLJ9Wj9SD8Ug</string>
     <string name="msg">Please Enable Permissions</string>
+    <string name="agregar">Agregar</string>
 </resources>

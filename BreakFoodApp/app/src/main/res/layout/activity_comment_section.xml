@@ -28,7 +28,7 @@
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/comment_edit_text"
+            android:id="@+id/comment_section_comment_layout"
             layout="@layout/comment_edit_text_layout"/>
 
 

@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.sergio.breakfoodapp.AgregarImagenRestaurante;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.adapters.GalleryAdapter;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
@@ -48,6 +47,7 @@ public class RestaurantGalleryActivity extends AppCompatActivity {
 
         JSONArray jsonArray = new JSONArray();
         try{
+            jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 images.add(jsonObject.getString("picture"));

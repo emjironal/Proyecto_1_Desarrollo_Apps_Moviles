@@ -48,7 +48,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         final Restaurant currentRestaurant = restaurantList.get(i);
         restaurantViewHolder.name.setText(currentRestaurant.getName());
         restaurantViewHolder.expense.setText("$");
-
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
@@ -73,10 +72,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             default:
                 pricePoint = "undefined";
         }
-        restaurantViewHolder.expense.setText(pricePoint);
-        restaurantViewHolder.contactText.setText(String.format("%s - %s",currentRestaurant.getOpen(), currentRestaurant.getClose()));
-        restaurantViewHolder.distance.setText(currentRestaurant.getFoodType());
-        restaurantViewHolder.localImage.setOnClickListener(new View.OnClickListener() {
+        restaurantViewHolder.holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, SelectedRestaurantActivity.class);
@@ -84,7 +80,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 context.startActivity(i);
             }
         });
-
+        restaurantViewHolder.expense.setText(pricePoint);
+        restaurantViewHolder.contactText.setText(String.format("%s - %s",currentRestaurant.getOpen(), currentRestaurant.getClose()));
+        restaurantViewHolder.distance.setText(currentRestaurant.getFoodType());
         double distance = DistanceManager.distance(latitude, longitude, currentRestaurant.getLat(), currentRestaurant.getLongitude());
 
         //restaurantViewHolder.distance.setText(String.format("%d,02%d KM",distance/1000, distance%1000));
@@ -98,10 +96,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public class RestaurantViewHolder extends RecyclerView.ViewHolder{
 
         ImageView localImage;
+        View holder;
         TextView name, distance, contactText, expense;
 
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
+            holder = itemView;
             localImage = itemView.findViewById(R.id.restaurant_item_image);
             name = itemView.findViewById(R.id.restaurant_item_name);
             distance = itemView.findViewById(R.id.restaurant_item_distance);

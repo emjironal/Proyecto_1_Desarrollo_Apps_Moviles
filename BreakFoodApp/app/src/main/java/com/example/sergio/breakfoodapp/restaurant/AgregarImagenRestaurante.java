@@ -1,4 +1,4 @@
-package com.example.sergio.breakfoodapp;
+package com.example.sergio.breakfoodapp.restaurant;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.sergio.breakfoodapp.BitmapManager;
+import com.example.sergio.breakfoodapp.ObjectSerializer;
+import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 

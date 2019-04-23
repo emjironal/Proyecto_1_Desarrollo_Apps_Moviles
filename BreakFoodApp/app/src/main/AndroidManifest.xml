@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AgregarImagenRestaurante"></activity>
+        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".AgregarRestauranteActivity" />
+        <activity android:name=".restaurant.AgregarImagenRestaurante" />
         <activity android:name=".restaurant.RestaurantGalleryActivity" />
         <activity android:name=".restaurant.CommentSectionActivity" />
         <activity android:name=".ResultListView" />
