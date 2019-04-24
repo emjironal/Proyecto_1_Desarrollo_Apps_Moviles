@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 public class BitmapManager
 {
@@ -18,5 +19,25 @@ public class BitmapManager
     public static Bitmap byteArrayToBitmap(byte[] byteArray)
     {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
+
+    public static ArrayList<String> byteToStrings(byte[] byteArray)
+    {
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(Byte b : byteArray)
+        {
+            arrayList.add(b.toString());
+        }
+        return arrayList;
+    }
+
+    public static byte[] stringsToByte(ArrayList<String> arrayList)
+    {
+        byte[] bytes = new byte[arrayList.size()];
+        for(int i = 0; i < arrayList.size(); i++)
+        {
+            bytes[i] = Byte.decode(arrayList.get(i));
+        }
+        return bytes;
     }
 }

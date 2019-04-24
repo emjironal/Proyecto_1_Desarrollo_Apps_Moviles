@@ -1,6 +1,7 @@
 package com.example.sergio.breakfoodapp.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.sergio.breakfoodapp.BitmapManager;
+import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>{
@@ -37,7 +44,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder galleyViewHolder, int i) {
-        //galleyViewHolder.imageView.setImageBitmap();
+        String imagen = images.get(i);
+        Bitmap bitmap = getBitmap(imagen);
+        galleyViewHolder.imageView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -53,5 +62,35 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             super(itemView);
             imageView = itemView.findViewById(R.id.item_image);
         }
+    }
+
+    public Bitmap getImageBitmap(String encodedImage)
+    {
+        try
+        {
+            File file = (File) ObjectSerializer.deserialize(encodedImage);
+            FileInputStream imageStream = new FileInputStream(file);
+            return BitmapFactory.decodeStream(imageStream);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Bitmap getBitmap(String encodedImage)
+    {
+        Bitmap bitmap = null;
+        try {
+            ArrayList<String> strings= (ArrayList<String>) ObjectSerializer.deserialize(encodedImage);
+            byte[] bytes = BitmapManager.stringsToByte(strings);
+            bitmap = BitmapManager.byteArrayToBitmap(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

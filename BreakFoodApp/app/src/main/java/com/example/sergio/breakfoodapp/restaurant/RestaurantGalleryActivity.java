@@ -1,6 +1,8 @@
 package com.example.sergio.breakfoodapp.restaurant;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.adapters.GalleryAdapter;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
@@ -18,6 +21,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +77,4 @@ public class RestaurantGalleryActivity extends AppCompatActivity {
         i.putExtra("idrestaurant", idrestaurant);
         startActivity(i);
     }
-
-
 }

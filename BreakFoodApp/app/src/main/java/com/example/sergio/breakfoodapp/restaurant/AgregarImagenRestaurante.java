@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
     private ArrayAdapter<String> adapter;
     private static final int SELECT_FILE = 1;
     private Integer idrestaurant;
+    private ArrayList<File> files;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,6 +59,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         imgVistaPrevia = findViewById(R.id.imgVistaPrevia);
         imagenes = new ArrayList<>();
         stringAdapter = new ArrayList<>();
+        files = new ArrayList<>();
 
         ListView listView = findViewById(R.id.listViewImagenes);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringAdapter);
@@ -75,20 +78,26 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         String url = "https://appetyte.herokuapp.com/android/agregarImagenes";
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
-        String pictures = "[";
-        for(int i = 0; i < imagenes.size(); i++)
+        for(int i = 0; i < files.size(); i++)
         {
-            Bitmap bitmap = imagenes.get(i);
-            byte[] bytes = BitmapManager.bitmapToByteArray(bitmap);
-            String encodedBytes = ObjectSerializer.encodeBytes(bytes);
-            pictures += encodedBytes;
-            if(i < imagenes.size() - 1)
-            {
-                pictures += ",";
+            /*File file = files.get(i);
+            String encodedBytes = null;
+            try {
+                encodedBytes = ObjectSerializer.serialize(file);
+                nameValuePairs.add(new BasicNameValuePair("pictures", encodedBytes));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+            try {
+                Bitmap bitmap = imagenes.get(i);
+                byte[] bytes = BitmapManager.bitmapToByteArray(bitmap);
+                ArrayList<String> strings = BitmapManager.byteToStrings(bytes);
+                String encodedBytes = ObjectSerializer.serialize(strings);
+                nameValuePairs.add(new BasicNameValuePair("pictures", encodedBytes));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        pictures += "]";
-        nameValuePairs.add(new BasicNameValuePair("pictures", pictures));
         HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
         String resultStr = LectorHttpResponse.leer(response);
         try
@@ -98,6 +107,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
             if(result)
             {
                 Toast.makeText(this, "Las imágenes se agregaron", Toast.LENGTH_SHORT).show();
+                finish();
             }
             else
             {
@@ -107,6 +117,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         catch (JSONException e)
         {
             Log.e("Error", e.getMessage());
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -137,15 +148,28 @@ public class AgregarImagenRestaurante extends AppCompatActivity
                         //Obtiene el path de la imagen
                         String filePath = selectedImage.getPath();
                         //Obtiene la imagen en bitmap
-                        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                        imgVistaPrevia.setImageBitmap(bitmap);
-                        imagenes.add(bitmap); //Agrega la imagen al array de imagenes
                         File file = new File(filePath);
-                        stringAdapter.add(file.getName()); //obtiene el nombre de la imagen y lo agrega
-                        adapter.notifyDataSetChanged(); //actualiza el list view
+                        Bitmap bitmap = null;
+                        InputStream imageStream = null;
+                        try {
+                            imageStream = getContentResolver().openInputStream(
+                                    selectedImage);
+                            bitmap = BitmapFactory.decodeStream(imageStream);
+                            imgVistaPrevia.setImageBitmap(bitmap);
+                            imagenes.add(bitmap); //Agrega la imagen al array de imagenes
+                            files.add(file);
+                            stringAdapter.add(file.getName()); //obtiene el nombre de la imagen y lo agrega
+                            adapter.notifyDataSetChanged(); //actualiza el list view
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 break;
+            default:
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
     }
 
