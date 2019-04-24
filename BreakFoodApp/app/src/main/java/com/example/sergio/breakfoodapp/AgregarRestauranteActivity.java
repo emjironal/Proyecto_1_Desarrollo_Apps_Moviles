@@ -50,13 +50,13 @@ public class AgregarRestauranteActivity extends AppCompatActivity {
 
                 List<NameValuePair> nameValuePairs = new ArrayList<>();
                 nameValuePairs.add(new BasicNameValuePair("name", nombre));
-                nameValuePairs.add(new BasicNameValuePair("latitudepos", "" + latitud));
-                nameValuePairs.add(new BasicNameValuePair("longitudepos", "" + longitud));
+                nameValuePairs.add(new BasicNameValuePair("latitudepos", latitud.toString()));
+                nameValuePairs.add(new BasicNameValuePair("longitudepos", longitud.toString()));
                 nameValuePairs.add(new BasicNameValuePair("open", apertura));
                 nameValuePairs.add(new BasicNameValuePair("foodtype", tipoComida));
                 nameValuePairs.add(new BasicNameValuePair("close", apertura));
                 nameValuePairs.add(new BasicNameValuePair("price", precio));
-                nameValuePairs.add(new BasicNameValuePair("codigodistrito", ""+ 11654));
+                nameValuePairs.add(new BasicNameValuePair("codigodistrito", "11654"));
                 HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
                 String resultStr = LectorHttpResponse.leer(response);
 
