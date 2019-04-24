@@ -1,10 +1,24 @@
 package com.example.sergio.breakfoodapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.sergio.breakfoodapp.http.GestorPostRequest;
+import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.example.sergio.breakfoodapp.model.Restaurant;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecuperarActivity extends AppCompatActivity {
 
@@ -17,15 +31,34 @@ public class RecuperarActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
-            }
-        });
+                EditText correoEditText = findViewById(R.id.retrieve_password_edittext);
+                if (!correoEditText.getText().toString().trim().contains("@")){
+                    Toast.makeText(getApplicationContext(),"Debe contener un correo válido",Toast.LENGTH_SHORT).show();
+                }else{
+                    //TODO: Hacer la petición de correo
+                    String url = "https://appetyte.herokuapp.com/android/recuperarContrasena";
+                    List<NameValuePair> restaurantl = new ArrayList<>();
+                    restaurantl.add(new BasicNameValuePair("email", correoEditText.getText().toString().trim()));
 
-        EditText correoEditText = findViewById(R.id.retrieve_password_edittext);
-        correoEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText content =
+                    String result = LectorHttpResponse.leer(GestorPostRequest.postData(url, restaurantl));
+
+                    JSONArray jsonArray = new JSONArray();
+                    try{
+                        jsonArray = new JSONArray(result);
+                        JSONObject restaurant = jsonArray.getJSONObject(0);
+                        boolean valid = restaurant.getBoolean("result");
+                        if(valid){
+                            Controller.getInstance().setCorreo(correoEditText.getText().toString().trim());
+                            Intent i = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+                            startActivity(i);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Correo no válido",Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
             }
         });
 

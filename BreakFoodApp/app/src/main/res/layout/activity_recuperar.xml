@@ -29,7 +29,7 @@
             android:text="Obtener código por correo"
             android:textAllCaps="false"
             android:layout_margin="50dp"
-            android:onClick="changePasswors"/>
+            android:onClick="changePassword"/>
     </LinearLayout>
 
 </RelativeLayout>
