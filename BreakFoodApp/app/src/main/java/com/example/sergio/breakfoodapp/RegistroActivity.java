@@ -83,7 +83,7 @@ public class RegistroActivity extends AppCompatActivity {
         btnRegistro.setOnClickListener(new View.OnClickListener() {    //aquÃ­ le agrega el evento que "escucha" el click
             @Override
             public void onClick(View v) {
-                Inicio();
+                aceptar();
             }
         });
 
@@ -146,39 +146,49 @@ public class RegistroActivity extends AppCompatActivity {
 
 
 
-    public void Inicio(){
-        String miCorreo = null;
-        String miContra = null;
-        String miConfi = null;
-        String url = "https://appetyte.herokuapp.com/android/login";
+    public void aceptar()
+    {
+        String url = "https://appetyte.herokuapp.com/android/insertarUsuario";
 
-        miCorreo = correo.getText().toString();
-        miContra = contrasena.getText().toString();
-        miConfi = confirmacion.getText().toString();
+        String email = correo.getText().toString();
+        String password = contrasena.getText().toString();
+        String confirmPassword = confirmacion.getText().toString();
 
-        if(miContra == miConfi) {
-
+        if(confirmPassword.equals(password))
+        {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
-            nameValuePairs.add(new BasicNameValuePair("email", miCorreo));
-            nameValuePairs.add(new BasicNameValuePair("password", miContra));
+            nameValuePairs.add(new BasicNameValuePair("email", email));
+            nameValuePairs.add(new BasicNameValuePair("password", password));
+            nameValuePairs.add(new BasicNameValuePair("username", email));
 
 
             HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
-
-
-            //Crea el intent (nueva ventana)
-            Intent newScreen = new Intent(RegistroActivity.this, MainActivity.class);
-            //Inicia la nueva ventana
-            startActivity(newScreen);
+            String resultStr = LectorHttpResponse.leer(response);
+            try
+            {
+                JSONObject jsonObject = new JSONObject(resultStr);
+                boolean result = jsonObject.getBoolean("result");
+                if(result)
+                {
+                    Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    //Crea el intent (nueva ventana)
+                    Intent newScreen = new Intent(RegistroActivity.this, MainActivity.class);
+                    //Inicia la nueva ventana
+                    startActivity(newScreen);
+                }
+                else
+                {
+                    Toast.makeText(this, "Registro fallido", Toast.LENGTH_SHORT).show();
+                }
+            }
+            catch(JSONException e)
+            {
+                Log.e("Error", e.getMessage());
+            }
         }
-
-        else {
-
-            //Crea el intent (nueva ventana)
-            Intent newScreen = new Intent(RegistroActivity.this, MainActivity.class);
-            //Inicia la nueva ventana
-            startActivity(newScreen);
-
+        else
+        {
+            Toast.makeText(this, "Contraseñas deben ser iguales", Toast.LENGTH_SHORT).show();
         }
 
     }
