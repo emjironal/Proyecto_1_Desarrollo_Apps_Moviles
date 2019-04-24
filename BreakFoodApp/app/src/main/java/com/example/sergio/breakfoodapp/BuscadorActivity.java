@@ -53,6 +53,9 @@ public class BuscadorActivity extends AbsRuntimePermission {
 
 
        opciones = (Spinner)findViewById(R.id.spnBuscarComida);
+
+       //TODO: Llenar array con datos reales
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
         opciones.setAdapter(adapter);
 

@@ -13,10 +13,13 @@ import android.widget.TextView;
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.example.sergio.breakfoodapp.model.Restaurant;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
         public void onClick(View v) {
             // TODO Auto-generated method stub
-            startActivity(new Intent(MainActivity.this,RecuperarActivity.class));
+
+
+
+            startActivity(new Intent(MainActivity.this,ChangePasswordActivity.class));
         }
     };
 
