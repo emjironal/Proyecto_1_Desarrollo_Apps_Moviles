@@ -12,12 +12,19 @@ import android.util.SparseIntArray;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 public abstract class AbsRuntimePermission extends AppCompatActivity {
     private SparseIntArray mErrorString;
+    private MixpanelAPI mixpanelAPI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mErrorString = new SparseIntArray();
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track(this.getClass().getName());
+        mixpanelAPI.flush();
 
     }
 

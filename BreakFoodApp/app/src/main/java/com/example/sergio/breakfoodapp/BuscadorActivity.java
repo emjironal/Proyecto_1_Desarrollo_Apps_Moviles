@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +23,17 @@ public class BuscadorActivity extends AbsRuntimePermission {
     private ImageButton btnEnter, btnSalir;
     private final int PERMISSIONS_REQUEST_MAP = 6546;
     private Spinner opciones ;
+    private MixpanelAPI mixpanelAPI;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscador);
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track(this.getClass().getName());
+        mixpanelAPI.flush();
 
         requestAppPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,

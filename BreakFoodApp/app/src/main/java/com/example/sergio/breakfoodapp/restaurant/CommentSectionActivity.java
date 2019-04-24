@@ -16,6 +16,7 @@ import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.model.Comment;
 import com.example.sergio.breakfoodapp.model.Restaurant;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,11 +34,16 @@ public class CommentSectionActivity extends AppCompatActivity {
     List<Comment> commentList;
     CommentAdapter adapter;
     RecyclerView recyclerView;
+    private MixpanelAPI mixpanelAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_section);
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track(this.getClass().getName());
+        mixpanelAPI.flush();
 
         idrestaurant = getIntent().getIntExtra("idrestaurant",0);
         String name = getIntent().getStringExtra("restName");

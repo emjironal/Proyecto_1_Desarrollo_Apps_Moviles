@@ -34,6 +34,7 @@ import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +49,7 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
     double longitude = 9.8560621;
     double latitude = -83.9112765;
     List<Restaurant> restaurantList;
+    private MixpanelAPI mixpanelAPI;
 
 
     @Override
@@ -60,6 +62,10 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
         @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track(this.getClass().getName());
+        mixpanelAPI.flush();
 
         String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
         String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));

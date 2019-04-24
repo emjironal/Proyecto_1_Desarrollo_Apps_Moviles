@@ -20,6 +20,7 @@ import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -48,6 +49,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
     private static final int SELECT_FILE = 1;
     private Integer idrestaurant;
     private ArrayList<File> files;
+    private MixpanelAPI mixpanelAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,6 +62,10 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         imagenes = new ArrayList<>();
         stringAdapter = new ArrayList<>();
         files = new ArrayList<>();
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track(this.getClass().getName());
+        mixpanelAPI.flush();
 
         ListView listView = findViewById(R.id.listViewImagenes);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringAdapter);

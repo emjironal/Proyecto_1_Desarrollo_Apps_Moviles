@@ -68,8 +68,9 @@ public class RegistroActivity extends AppCompatActivity {
         /*callbackManager=CallbackManager.Factory.create();
         loginButton=(LoginButton)findViewById(R.id.login_button);*/
 
+
         mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
-        mixpanelAPI.track("Result Activity");
+        mixpanelAPI.track(this.getClass().getName());
         mixpanelAPI.flush();
 
         correo = (EditText)findViewById(R.id.etRegistroCorreo);
