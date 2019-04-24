@@ -70,6 +70,11 @@ public class BuscadorActivity extends AbsRuntimePermission {
     }
 
 
+    private void getFoodTypeData(){
+        //TODO: obtener la comida correcta
+    }
+
+
     public void inicio(){
         //Crea el intent (nueva ventana)
         Intent newScreen = new Intent(BuscadorActivity.this, ResultadoActivity.class);

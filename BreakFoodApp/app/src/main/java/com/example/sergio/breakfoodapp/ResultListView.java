@@ -11,6 +11,7 @@ import com.example.sergio.breakfoodapp.adapters.RestaurantAdapter;
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.model.Restaurant;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +25,7 @@ public class ResultListView extends AppCompatActivity {
     RecyclerView restaurantRecyclerView;
     RestaurantAdapter adapter;
     List<Restaurant> restaurantList;
+    private MixpanelAPI mixpanelAPI;
 
 
     @Override
@@ -32,6 +34,10 @@ public class ResultListView extends AppCompatActivity {
         setContentView(R.layout.activity_result_list_view);
 
         restaurantRecyclerView = findViewById(R.id.restarant_recycler_view);
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track("Result Activity");
+        mixpanelAPI.flush();
 
         String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
         String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));
@@ -73,4 +79,12 @@ public class ResultListView extends AppCompatActivity {
     }
 
 
+    public void addNewRestaurant(View view) {
+
+        //Crea el intent (nueva ventana)
+        Intent newScreen = new Intent(getApplicationContext(), AgregarRestauranteActivity.class);
+        //Inicia la nueva ventana
+        startActivity(newScreen);
+
+    }
 }

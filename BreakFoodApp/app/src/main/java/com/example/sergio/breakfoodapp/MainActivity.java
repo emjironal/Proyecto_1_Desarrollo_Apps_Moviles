@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(), MIXPANEL_TOKEN);
-        mixpanelAPI.track("OnCreate");
+        mixpanelAPI.track("Login Activity");
+        mixpanelAPI.flush();
 
         btnEnter = (Button)findViewById(R.id.btInicioSesion);        //apunta mi variable Button al botÃ³n del activity
         btnEnter.setOnClickListener(new View.OnClickListener() {    //aquÃ­ le agrega el evento que "escucha" el click
@@ -150,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         }
-    }
+
+
+}
 
 
 

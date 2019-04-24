@@ -27,5 +27,6 @@
         completions."
     </string>
     <string name="id_facebook">282934949316021</string>
+    <string name="mixpanel_token">2e8bdc478fb999b0ffdfb0a8b06673ff</string>
 
 </resources>

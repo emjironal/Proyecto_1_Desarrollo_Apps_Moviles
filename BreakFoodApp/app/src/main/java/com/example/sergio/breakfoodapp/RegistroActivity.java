@@ -22,6 +22,7 @@ import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.facebook.*;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -37,6 +38,7 @@ public class RegistroActivity extends AppCompatActivity {
 
     private Button btnEnter, btnRegistro;
     private EditText correo,contrasena,confirmacion;
+    private MixpanelAPI mixpanelAPI;
 
    /* private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
@@ -65,6 +67,10 @@ public class RegistroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
         /*callbackManager=CallbackManager.Factory.create();
         loginButton=(LoginButton)findViewById(R.id.login_button);*/
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
+        mixpanelAPI.track("Result Activity");
+        mixpanelAPI.flush();
 
         correo = (EditText)findViewById(R.id.etRegistroCorreo);
         contrasena = (EditText)findViewById(R.id.etRegistroContra);
