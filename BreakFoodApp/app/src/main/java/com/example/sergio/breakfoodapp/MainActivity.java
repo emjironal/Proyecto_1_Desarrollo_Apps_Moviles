@@ -24,7 +24,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnEnter;
-    private ImageButton btnFacebook;
     private TextView txtSignUp, txtRecuperar;
     private MixpanelAPI mixpanelAPI;
 
@@ -52,14 +51,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 inicio();
-            }
-        });
-
-        btnFacebook = (ImageButton) findViewById(R.id.btnInicioFacebook);        //apunta mi variable Button al botÃ³n del activity
-        btnFacebook.setOnClickListener(new View.OnClickListener() {    //aquÃ­ le agrega el evento que "escucha" el click
-            @Override
-            public void onClick(View v) {
-                inicioFacebook();
             }
         });
 
@@ -111,11 +102,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void inicioFacebook(){
-        //Crea el intent (nueva ventana)
-        Intent newScreen = new Intent(MainActivity.this, FacebookReActivity.class);
-        //Inicia la nueva ventana
-        startActivity(newScreen);
-    }
 }
 
