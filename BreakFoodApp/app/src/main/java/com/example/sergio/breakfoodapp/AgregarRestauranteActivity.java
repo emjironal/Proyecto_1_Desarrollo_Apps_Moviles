@@ -56,7 +56,7 @@ public class AgregarRestauranteActivity extends AppCompatActivity {
                 nameValuePairs.add(new BasicNameValuePair("foodtype", tipoComida));
                 nameValuePairs.add(new BasicNameValuePair("close", apertura));
                 nameValuePairs.add(new BasicNameValuePair("price", precio));
-                nameValuePairs.add(new BasicNameValuePair("codigodistrito", "11654"));
+                nameValuePairs.add(new BasicNameValuePair("codigodistrito", "1151"));
                 HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
                 String resultStr = LectorHttpResponse.leer(response);
 
