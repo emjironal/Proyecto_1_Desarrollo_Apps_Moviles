@@ -85,6 +85,7 @@ public class CommentSectionActivity extends AppCompatActivity {
 
         JSONArray jsonArray = new JSONArray();
         Comment comment = new Comment();
+        commentList.clear();
         try{
             jsonArray = new JSONArray(result);
 
@@ -119,7 +120,6 @@ public class CommentSectionActivity extends AppCompatActivity {
             boolean valid = respuesta.getBoolean("result");
             if (valid){
                 getComments();
-                recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }else{
                 Toast.makeText(getApplicationContext(),"Error al subir comentario",Toast.LENGTH_SHORT).show();

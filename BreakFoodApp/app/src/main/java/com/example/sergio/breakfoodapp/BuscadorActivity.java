@@ -13,7 +13,16 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.sergio.breakfoodapp.http.GestorGetRequest;
+import com.example.sergio.breakfoodapp.http.GestorPostRequest;
+import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +72,7 @@ public class BuscadorActivity extends AbsRuntimePermission {
 
        //TODO: Llenar array con datos reales
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getFoodTypeData());
         opciones.setAdapter(adapter);
 
 
@@ -77,8 +86,23 @@ public class BuscadorActivity extends AbsRuntimePermission {
     }
 
 
-    private void getFoodTypeData(){
-        //TODO: obtener la comida correcta
+    private ArrayList<String> getFoodTypeData()
+    {
+        String url = "https://appetyte.herokuapp.com/android/getAllFoodtypes";
+        String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));
+        ArrayList<String> foodtypes = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0; i < jsonArray.length(); i++)
+            {
+                JSONObject respuesta = jsonArray.getJSONObject(i);
+                String foodtype = respuesta.getString("foodtype");
+                foodtypes.add(foodtype);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return foodtypes;
     }
 
 

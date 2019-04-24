@@ -155,20 +155,38 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
         findViewById(R.id.restaurant_profile_star4).setClickable(false);
         findViewById(R.id.restaurant_profile_star5).setClickable(false);
         //TODO: enviar score
+        submitScore(number);
 
     }
 
     private void submitScore(int n){
         //TODO: enviar score, iduser, idrestaurant
+        String url = "https://appetyte.herokuapp.com/android/calificarResturante";
+        List<NameValuePair> comment = new ArrayList<>();
+        comment.add(new BasicNameValuePair("idrestaurant", Integer.toString(idrestaurant)));
+        comment.add(new BasicNameValuePair("score",Integer.toString(n)));
+        comment.add(new BasicNameValuePair("iduser", "" + Controller.getInstance().getUserID()));
+        String result = LectorHttpResponse.leer(GestorPostRequest.postData(url, comment));
+        try {
+            JSONObject respuesta = new JSONObject(result);
+            boolean valid = respuesta.getBoolean("result");
+            if (valid){
+                Toast.makeText(getApplicationContext(),"Calificación subida correctamente",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(),"Error al subir calificación",Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void submitComment(String content, int ownerID){
         String url = "https://appetyte.herokuapp.com/android/comentar";
         List<NameValuePair> comment = new ArrayList<>();
-        comment.add(new BasicNameValuePair("idrestaurant", ""+idrestaurant));
+        comment.add(new BasicNameValuePair("idrestaurant", Integer.toString(idrestaurant)));
         comment.add(new BasicNameValuePair("content",content));
-        comment.add(new BasicNameValuePair("iduser", "" + ownerID));
+        comment.add(new BasicNameValuePair("iduser", Integer.toString(ownerID)));
         String result = LectorHttpResponse.leer(GestorPostRequest.postData(url, comment));
 
         try {
@@ -182,6 +200,11 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void printMessage(String message)
+    {
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
 

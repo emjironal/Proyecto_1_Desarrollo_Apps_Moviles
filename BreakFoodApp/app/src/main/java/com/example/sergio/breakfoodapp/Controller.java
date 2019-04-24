@@ -5,10 +5,10 @@ public class Controller {
     private int userID;
     private String username, correo;
 
-    private static Controller instance;
+    private static final Controller instance = new Controller();
 
     public synchronized static Controller getInstance(){
-        return instance != null ? instance : new Controller();
+        return instance;
     }
 
     public int getUserID() {
