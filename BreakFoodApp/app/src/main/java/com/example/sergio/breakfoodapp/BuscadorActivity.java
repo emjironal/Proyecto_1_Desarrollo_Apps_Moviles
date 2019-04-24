@@ -6,14 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BuscadorActivity extends AbsRuntimePermission {
 
     private ImageButton btnEnter, btnSalir;
     private final int PERMISSIONS_REQUEST_MAP = 6546;
+    private Spinner opciones ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,11 @@ public class BuscadorActivity extends AbsRuntimePermission {
                 salir();
             }
         });
+
+
+       opciones = (Spinner)findViewById(R.id.spnBuscarComida);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
+        opciones.setAdapter(adapter);
 
 
     }
