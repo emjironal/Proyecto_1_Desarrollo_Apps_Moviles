@@ -9,13 +9,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
+import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.facebook.*;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -23,6 +26,8 @@ import com.facebook.login.widget.LoginButton;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -145,6 +150,7 @@ public class RegistroActivity extends AppCompatActivity {
         String miCorreo = null;
         String miContra = null;
         String miConfi = null;
+        String url = "https://appetyte.herokuapp.com/android/login";
 
         miCorreo = correo.getText().toString();
         miContra = contrasena.getText().toString();
@@ -153,10 +159,12 @@ public class RegistroActivity extends AppCompatActivity {
         if(miContra == miConfi) {
 
             List<NameValuePair> nameValuePairs = new ArrayList<>();
-            nameValuePairs.add(new BasicNameValuePair();
+            nameValuePairs.add(new BasicNameValuePair("email", miCorreo));
+            nameValuePairs.add(new BasicNameValuePair("password", miContra));
 
 
-            GestorPostRequest.postData("https://appetyte.herokuapp.com/android/login", lista);
+            HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
+
 
             //Crea el intent (nueva ventana)
             Intent newScreen = new Intent(RegistroActivity.this, MainActivity.class);
