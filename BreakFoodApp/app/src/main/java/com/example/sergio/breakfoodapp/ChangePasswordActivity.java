@@ -36,7 +36,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         if(!password.trim().equals("") && !code.trim().equals("")){
             //TODO: Enviar nueva informacion de contrasenna
-            String url = "https://appetyte.herokuapp.com/android/recuperarContrasena";
+            String url = "https://appetyte.herokuapp.com/android/cambiarContrasena";
             List<NameValuePair> restaurantl = new ArrayList<>();
             restaurantl.add(new BasicNameValuePair("email", Controller.getInstance().getCorreo()));
             restaurantl.add(new BasicNameValuePair("password", password.trim()));
