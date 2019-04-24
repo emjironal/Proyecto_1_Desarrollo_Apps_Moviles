@@ -86,15 +86,15 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
         for(int i = 0; i < files.size(); i++)
         {
-            /*File file = files.get(i);
+            File file = files.get(i);
             String encodedBytes = null;
             try {
                 encodedBytes = ObjectSerializer.serialize(file);
                 nameValuePairs.add(new BasicNameValuePair("pictures", encodedBytes));
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
-            try {
+            }
+            /*try {
                 Bitmap bitmap = imagenes.get(i);
                 byte[] bytes = BitmapManager.bitmapToByteArray(bitmap);
                 ArrayList<String> strings = BitmapManager.byteToStrings(bytes);
@@ -102,7 +102,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
                 nameValuePairs.add(new BasicNameValuePair("pictures", encodedBytes));
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
         String resultStr = LectorHttpResponse.leer(response);

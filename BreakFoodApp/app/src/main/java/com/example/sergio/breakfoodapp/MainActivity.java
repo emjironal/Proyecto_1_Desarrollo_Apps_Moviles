@@ -155,6 +155,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    public void printMessage(String message)
+    {
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+    }
+
 }
 
 

@@ -14,6 +14,7 @@ import com.example.sergio.breakfoodapp.BitmapManager;
 import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder galleyViewHolder, int i) {
         String imagen = images.get(i);
-        Bitmap bitmap = getBitmap(imagen);
+        Bitmap bitmap = getImageBitmap(imagen);
         galleyViewHolder.imageView.setImageBitmap(bitmap);
     }
 
@@ -70,7 +71,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         {
             File file = (File) ObjectSerializer.deserialize(encodedImage);
             FileInputStream imageStream = new FileInputStream(file);
-            return BitmapFactory.decodeStream(imageStream);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(imageStream);
+            return BitmapFactory.decodeStream(bufferedInputStream);
         }
         catch (Exception e)
         {
