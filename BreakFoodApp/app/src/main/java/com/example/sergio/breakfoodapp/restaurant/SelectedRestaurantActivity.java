@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sergio.breakfoodapp.Controller;
 import com.example.sergio.breakfoodapp.R;
@@ -17,6 +18,7 @@ import com.example.sergio.breakfoodapp.model.Restaurant;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -86,7 +88,11 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
         commentLayout.findViewById(R.id.comment_submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitComment(((EditText)commentLayout.findViewById(R.id.comment_content_edit_text)).getText().toString(), Controller.getInstance().getUserID());
+                if (!((EditText)commentLayout.findViewById(R.id.comment_content_edit_text)).getText().toString().equals("")){
+                    submitComment(((EditText)commentLayout.findViewById(R.id.comment_content_edit_text)).getText().toString(), Controller.getInstance().getUserID());
+                }else{
+                    Toast.makeText(getApplicationContext(),"Debe escribir algo",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -159,6 +165,17 @@ public class SelectedRestaurantActivity extends AppCompatActivity {
         comment.add(new BasicNameValuePair("iduser", "" + ownerID));
         String result = LectorHttpResponse.leer(GestorPostRequest.postData(url, comment));
 
+        try {
+            JSONObject respuesta = new JSONObject(result);
+            boolean valid = respuesta.getBoolean("result");
+            if (valid){
+                Toast.makeText(getApplicationContext(),"Comentario subido correctamente",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(),"Error al subir comentario",Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -35,7 +35,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String code =  ((EditText)findViewById(R.id.change_password_code_edittext)).getText().toString();
 
         if(!password.trim().equals("") && !code.trim().equals("")){
-            //TODO: Enviar nueva informacion de contrasenna
             String url = "https://appetyte.herokuapp.com/android/cambiarContrasena";
             List<NameValuePair> restaurantl = new ArrayList<>();
             restaurantl.add(new BasicNameValuePair("email", Controller.getInstance().getCorreo()));
@@ -46,8 +45,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             JSONArray jsonArray = new JSONArray();
             try{
-                jsonArray = new JSONArray(result);
-                JSONObject restaurant = jsonArray.getJSONObject(0);
+                //jsonArray = new JSONArray(result);
+                JSONObject restaurant = new JSONObject(result);
                 boolean valid = restaurant.getBoolean("result");
                 if(valid){
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);

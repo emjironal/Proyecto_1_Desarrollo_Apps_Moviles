@@ -44,8 +44,8 @@ public class RecuperarActivity extends AppCompatActivity {
 
                     JSONArray jsonArray = new JSONArray();
                     try{
-                        jsonArray = new JSONArray(result);
-                        JSONObject restaurant = jsonArray.getJSONObject(0);
+                        //jsonArray = new JSONArray(result);
+                        JSONObject restaurant = new JSONObject(result);
                         boolean valid = restaurant.getBoolean("result");
                         if(valid){
                             Controller.getInstance().setCorreo(correoEditText.getText().toString().trim());
