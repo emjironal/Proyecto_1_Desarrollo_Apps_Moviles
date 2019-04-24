@@ -3,7 +3,7 @@ package com.example.sergio.breakfoodapp;
 public class Controller {
 
     private int userID;
-    private String username;
+    private String username, correo;
 
     private static Controller instance;
 
@@ -26,4 +26,11 @@ public class Controller {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
+    public String getCorreo(){return correo;}
+
+    public void setCorreo(String correo){this.correo = correo;}
+
+
 }
