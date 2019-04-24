@@ -7,7 +7,7 @@ public class Controller {
 
     private static Controller instance;
 
-    public static Controller getInstance(){
+    public synchronized static Controller getInstance(){
         return instance != null ? instance : new Controller();
     }
 

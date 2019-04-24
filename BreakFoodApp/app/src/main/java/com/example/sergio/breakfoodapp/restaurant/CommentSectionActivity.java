@@ -76,7 +76,7 @@ public class CommentSectionActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        final View commentLayout = findViewById(R.id.restaurant_profile_comment_layout);
+        final View commentLayout = findViewById(R.id.comment_section_comment_layout);
         commentLayout.findViewById(R.id.comment_submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

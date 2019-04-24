@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -25,23 +26,26 @@ public class MainActivity extends AppCompatActivity {
     private Button btnEnter;
     private ImageButton btnFacebook;
     private TextView txtSignUp, txtRecuperar;
+    private MixpanelAPI mixpanelAPI;
+
+
+    //TODO: agregar TOKEN REAL
+    public static final String MIXPANEL_TOKEN = "2e8bdc478fb999b0ffdfb0a8b06673ff";
 
     //TODO: Agregar pantalla nuevo restaurante
     //TODO: Agregar LocatioPicker para esa pantalla
-    //TODO: Agregar pantalla editar restaurante
-    //TODO: Agregar Pantalla de imagenes
-    //TODO: Agregar Pantalla de agregar imágenes
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
         StrictMode.setThreadPolicy(policy);
 
+
+        mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(), MIXPANEL_TOKEN);
+        mixpanelAPI.track("OnCreate");
 
         btnEnter = (Button)findViewById(R.id.btInicioSesion);        //apunta mi variable Button al botÃ³n del activity
         btnEnter.setOnClickListener(new View.OnClickListener() {    //aquÃ­ le agrega el evento que "escucha" el click
@@ -67,14 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
         txtRecuperar=(TextView)findViewById(R.id.txtInicioRecuperar);
         txtRecuperar.setOnClickListener(recuperar);
+    }
 
-        String url = "http://192.168.0.10:8000/android/login";//cambiar a https://appetyte.herokuapp.com/
-        List<NameValuePair> user = new ArrayList<>();
-        user.add(new BasicNameValuePair("username", "mauri"));
-        user.add(new BasicNameValuePair("password", "1234"));
-        Log.e("Error", LectorHttpResponse.leer(GestorPostRequest.postData(url, user)));
-        url = "http://192.168.0.10:8000/android/getRestaurantes";
-        Log.e("Error", LectorHttpResponse.leer(GestorGetRequest.getData(url)));
+    @Override
+    protected void onDestroy() {
+        mixpanelAPI.flush();
+        super.onDestroy();
     }
 
 

@@ -1,9 +1,11 @@
 package com.example.sergio.breakfoodapp.restaurant;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.sergio.breakfoodapp.R;
@@ -45,6 +47,7 @@ public class RestaurantGalleryActivity extends AppCompatActivity {
 
         JSONArray jsonArray = new JSONArray();
         try{
+            jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 images.add(jsonObject.getString("picture"));
@@ -60,4 +63,13 @@ public class RestaurantGalleryActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
+
+    public void addImages(View view){
+        Intent i = new Intent(getApplicationContext(), AgregarImagenRestaurante.class);
+        i.putExtra("idrestaurant", idrestaurant);
+        startActivity(i);
+    }
+
+
 }
