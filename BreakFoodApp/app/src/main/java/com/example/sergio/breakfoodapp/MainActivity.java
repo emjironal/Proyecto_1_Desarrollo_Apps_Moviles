@@ -13,6 +13,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
+
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
@@ -36,10 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private MixpanelAPI mixpanelAPI;
     private EditText correo,contrasena;
 
-    //TODO: agregar TOKEN REAL
     public static final String MIXPANEL_TOKEN = "2e8bdc478fb999b0ffdfb0a8b06673ff";
 
-    //TODO: Agregar pantalla nuevo restaurante
     //TODO: Agregar LocatioPicker para esa pantalla
 
 
