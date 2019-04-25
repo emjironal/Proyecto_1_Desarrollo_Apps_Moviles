@@ -40,4 +40,10 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.7'
 
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+
+    //firebase
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.android.gms:play-services-basement'
 }
+apply plugin: 'com.google.gms.google-services'

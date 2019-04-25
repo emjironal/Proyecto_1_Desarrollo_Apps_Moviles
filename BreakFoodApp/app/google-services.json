@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "949815142957",
+    "firebase_url": "https://appetyte-1180a.firebaseio.com",
+    "project_id": "appetyte-1180a",
+    "storage_bucket": "appetyte-1180a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949815142957:android:3e78edd6a7ccc285",
+        "android_client_info": {
+          "package_name": "com.example.sergio.breakfoodapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949815142957-m88vgi2mmc2o10aks106r22df129fc2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs6chxjrFETI7PgP63ROLLDcQR2a6w4BM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949815142957-m88vgi2mmc2o10aks106r22df129fc2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
