@@ -3,6 +3,7 @@ package com.example.sergio.breakfoodapp.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.sergio.breakfoodapp.BitmapManager;
+import com.example.sergio.breakfoodapp.GestorImagenes;
 import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 
@@ -46,6 +48,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder galleyViewHolder, int i) {
         String imagen = images.get(i);
+        //TODO: 
+        Uri imageURI = GestorImagenes.getInstance().getUriFoto("14","gege").getResult();
         Bitmap bitmap = getImageBitmap(imagen);
         galleyViewHolder.imageView.setImageBitmap(bitmap);
     }

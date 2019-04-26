@@ -16,11 +16,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sergio.breakfoodapp.BitmapManager;
+import com.example.sergio.breakfoodapp.Controller;
+import com.example.sergio.breakfoodapp.GestorImagenes;
 import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -157,11 +160,15 @@ public class AgregarImagenRestaurante extends AppCompatActivity
                         File file = new File(filePath);
                         Bitmap bitmap = null;
                         InputStream imageStream = null;
+                        String filename = file.getName();
                         try {
                             imageStream = getContentResolver().openInputStream(
                                     selectedImage);
-                            bitmap = BitmapFactory.decodeStream(imageStream);
-                            imgVistaPrevia.setImageBitmap(bitmap);
+                            FileInputStream fileInputStream = new FileInputStream(file);
+                            GestorImagenes.getInstance().subirFoto(fileInputStream, ""+idrestaurant,file.getName());
+                            Picasso.with(getApplicationContext()).load(selectedImage).into(imgVistaPrevia);
+                            //bitmap = BitmapFactory.decodeStream(imageStream);
+                            //imgVistaPrevia.setImageBitmap(bitmap);
                             imagenes.add(bitmap); //Agrega la imagen al array de imagenes
                             files.add(file);
                             stringAdapter.add(file.getName()); //obtiene el nombre de la imagen y lo agrega
