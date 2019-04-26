@@ -89,6 +89,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
         for(int i = 0; i < files.size(); i++)
         {
+            //TODO: subir urls en vez de files
             File file = files.get(i);
             String encodedBytes = null;
             try {
@@ -166,6 +167,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
                                     selectedImage);
                             FileInputStream fileInputStream = new FileInputStream(file);
                             GestorImagenes.getInstance().subirFoto(fileInputStream, ""+idrestaurant,file.getName());
+                            String url = GestorImagenes.getInstance().getUriFoto(""+idrestaurant,file.getName()).toString();
                             Picasso.with(getApplicationContext()).load(selectedImage).into(imgVistaPrevia);
                             //bitmap = BitmapFactory.decodeStream(imageStream);
                             //imgVistaPrevia.setImageBitmap(bitmap);
