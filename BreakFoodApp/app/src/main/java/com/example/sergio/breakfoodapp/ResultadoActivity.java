@@ -190,6 +190,7 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
         longitude = intent.getDoubleExtra("longitude",longitude);
 
 
+
         String url = "https://appetyte.herokuapp.com/android/buscarRestaurante";
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         if(!nombreRestaurante.equals(""))
@@ -204,7 +205,7 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
             nameValuePairs.add(new BasicNameValuePair("longitudepos", Double.toString(longitude)));
         }
         if(!tipoComida.toLowerCase().equals("cualquiera"))
-            nameValuePairs.add(new BasicNameValuePair("footype", tipoComida));
+            nameValuePairs.add(new BasicNameValuePair("foodtype", tipoComida));
 
         String result = LectorHttpResponse.leer(GestorPostRequest.postData(url,nameValuePairs));
         JSONArray jsonArray = new JSONArray();

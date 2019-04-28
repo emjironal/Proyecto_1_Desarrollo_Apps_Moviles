@@ -73,7 +73,7 @@ public class ResultListView extends AppCompatActivity {
             nameValuePairs.add(new BasicNameValuePair("longitudepos", Double.toString(longitude)));
         }
         if(!tipoComida.toLowerCase().equals("cualquiera"))
-            nameValuePairs.add(new BasicNameValuePair("footype", tipoComida));
+            nameValuePairs.add(new BasicNameValuePair("foodtype", tipoComida));
 
         String result = LectorHttpResponse.leer(GestorPostRequest.postData(url,nameValuePairs));
         JSONArray jsonArray = new JSONArray();
