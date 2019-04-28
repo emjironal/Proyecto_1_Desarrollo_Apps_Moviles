@@ -22,6 +22,8 @@ import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.UploadTask;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.picasso.Picasso;
 
@@ -51,7 +53,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
     private ArrayAdapter<String> adapter;
     private static final int SELECT_FILE = 1;
     private Integer idrestaurant;
-    private ArrayList<File> files;
+    private ArrayList<FileInputStream> files;
     private MixpanelAPI mixpanelAPI;
 
     @Override
@@ -90,23 +92,9 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         for(int i = 0; i < files.size(); i++)
         {
             //TODO: subir urls en vez de files
-            File file = files.get(i);
-            String encodedBytes = null;
-            try {
-                encodedBytes = ObjectSerializer.serialize(file);
-                nameValuePairs.add(new BasicNameValuePair("pictures", encodedBytes));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            /*try {
-                Bitmap bitmap = imagenes.get(i);
-                byte[] bytes = BitmapManager.bitmapToByteArray(bitmap);
-                ArrayList<String> strings = BitmapManager.byteToStrings(bytes);
-                String encodedBytes = ObjectSerializer.serialize(strings);
-                nameValuePairs.add(new BasicNameValuePair("pictures", encodedBytes));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+            FileInputStream file = files.get(i);
+            String nombreImagen = stringAdapter.get(i);
+            subirImagenFireBase(file, nombreImagen);
         }
         HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
         String resultStr = LectorHttpResponse.leer(response);
@@ -161,18 +149,13 @@ public class AgregarImagenRestaurante extends AppCompatActivity
                         File file = new File(filePath);
                         Bitmap bitmap = null;
                         InputStream imageStream = null;
-                        String filename = file.getName();
                         try {
                             imageStream = getContentResolver().openInputStream(
                                     selectedImage);
-                            FileInputStream fileInputStream = new FileInputStream(file);
-                            GestorImagenes.getInstance().subirFoto(fileInputStream, ""+idrestaurant,file.getName());
-                            String url = GestorImagenes.getInstance().getUriFoto(""+idrestaurant,file.getName()).toString();
+                            FileInputStream fileInputStream = (FileInputStream) imageStream;
                             Picasso.with(getApplicationContext()).load(selectedImage).into(imgVistaPrevia);
-                            //bitmap = BitmapFactory.decodeStream(imageStream);
-                            //imgVistaPrevia.setImageBitmap(bitmap);
                             imagenes.add(bitmap); //Agrega la imagen al array de imagenes
-                            files.add(file);
+                            files.add(fileInputStream);
                             stringAdapter.add(file.getName()); //obtiene el nombre de la imagen y lo agrega
                             adapter.notifyDataSetChanged(); //actualiza el list view
                         }
@@ -188,5 +171,47 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         }
     }
 
-
+    public void subirImagenFireBase(FileInputStream file, final String fileName)
+    {
+        final GestorImagenes gImg = GestorImagenes.getInstance();
+        UploadTask uploadTask = gImg.subirFoto(file,"restaurantes", fileName);
+        uploadTask.addOnSuccessListener(AgregarImagenRestaurante.this, new OnSuccessListener<UploadTask.TaskSnapshot>()
+        {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+            {
+                gImg.getUriFoto("restaurantes", fileName).addOnSuccessListener(new OnSuccessListener<Uri>()
+                {
+                    @Override
+                    public void onSuccess(Uri uri)
+                    {
+                        String url = "https://appetyte.herokuapp.com/android/agregarImagenes";
+                        List<NameValuePair> nameValuePairs = new ArrayList<>();
+                        nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
+                        nameValuePairs.add(new BasicNameValuePair("pictures", uri.toString()));
+                        HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
+                        String resultStr = LectorHttpResponse.leer(response);
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(resultStr);
+                            boolean result = jsonObject.getBoolean("result");
+                            if(result)
+                            {
+                                Toast.makeText(AgregarImagenRestaurante.this, "Las imágenes se agregaron", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(AgregarImagenRestaurante.this, "Las imágenes no se agregaron", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch (JSONException e)
+                        {
+                            Log.e("Error", e.getMessage());
+                            Toast.makeText(AgregarImagenRestaurante.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+    }
 }
