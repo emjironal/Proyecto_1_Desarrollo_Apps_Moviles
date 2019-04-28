@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
+import com.example.sergio.breakfoodapp.location.SingleShotLocationProvider;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.NameValuePair;
@@ -24,15 +27,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BuscadorActivity extends AbsRuntimePermission {
 
     private ImageButton btnEnter, btnSalir;
     private final int PERMISSIONS_REQUEST_MAP = 6546;
-    private Spinner opciones ;
+    private Spinner spinnerTipoComida;
+    private Spinner spinnerDistancia;
+    private Spinner spinnerPrecio;
+    private Spinner spinnerCalificacion;
     private MixpanelAPI mixpanelAPI;
+    double latitude, longitude;
 
 
     @Override
@@ -54,7 +63,12 @@ public class BuscadorActivity extends AbsRuntimePermission {
         btnEnter.setOnClickListener(new View.OnClickListener() {    //aquÃ­ le agrega el evento que "escucha" el click
             @Override
             public void onClick(View v) {
-                inicio();
+                String nombreRest = ((EditText) findViewById(R.id.editTextRestauranteNombre)).getText().toString();
+                String precio = spinnerPrecio.getSelectedItem().toString();
+                String distancia = spinnerDistancia.getSelectedItem().toString();
+                String calificacion = spinnerCalificacion.getSelectedItem().toString();
+                String tipoComida = spinnerTipoComida.getSelectedItem().toString();
+                buscar(precio,distancia,nombreRest,calificacion,tipoComida);
             }
         });
 
@@ -67,14 +81,32 @@ public class BuscadorActivity extends AbsRuntimePermission {
             }
         });
 
+        //Asigna spinners
+        spinnerTipoComida = (Spinner)findViewById(R.id.spnTipoComida);
+        spinnerPrecio = findViewById(R.id.spnPrecioComida);
+        spinnerCalificacion = findViewById(R.id.spnCalificacionComida);
+        spinnerDistancia = findViewById(R.id.spnDistanciaRestaurante);
 
-       opciones = (Spinner)findViewById(R.id.spnBuscarComida);
+        //ArrayList de strings
+        String[] precios = {"Cualquiera","Barato","Medio","Caro"};
+        String[] calificaciones = {"Cualquiera","1","2","3","4","5"};
+        String[] distancias = {"Cualquiera","5","10","50","100","200"};
+
 
        //TODO: Llenar array con datos reales
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getFoodTypeData());
-        opciones.setAdapter(adapter);
+        ArrayAdapter<String> adapterTipo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getFoodTypeData());
+        spinnerTipoComida.setAdapter(adapterTipo);
 
+        ArrayAdapter<String> adapterPrecio = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_spinner_item, precios);
+        spinnerPrecio.setAdapter(adapterPrecio);
+
+        ArrayAdapter<String> adapterCalificacion = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_spinner_item, calificaciones);
+        spinnerCalificacion.setAdapter(adapterCalificacion);
+
+
+        ArrayAdapter<String> adapterDistancia = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_spinner_item, distancias);
+        spinnerDistancia.setAdapter(adapterDistancia);
 
     }
 
@@ -85,12 +117,38 @@ public class BuscadorActivity extends AbsRuntimePermission {
         }
     }
 
+    private void getCurrentGPS(){
+        SingleShotLocationProvider.requestSingleUpdate(this,new SingleShotLocationProvider.LocationCallback() {
+            @Override public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+                longitude = location.longitude;
+                latitude = location.longitude;
+                Log.i("LocationGPSCallback",String.format("latutude: %s, longitude: %s",latitude, longitude));
+            }
+        });
+    }
+
+
+
+    private void buscar(String precio, String distancia, String nombreRestaurante, String calificacion, String tipoComida){
+        getCurrentGPS();
+        Intent newScreen = new Intent(BuscadorActivity.this, ResultadoActivity.class);
+        newScreen.putExtra("precio",precio);
+        newScreen.putExtra("nombreRestaurante",nombreRestaurante);
+        newScreen.putExtra("calificacion",calificacion);
+        newScreen.putExtra("tipo",tipoComida);
+        newScreen.putExtra("latitude",latitude);
+        newScreen.putExtra("longitude",longitude);
+        newScreen.putExtra("distancia",distancia);
+        startActivity(newScreen);
+    }
+
 
     private ArrayList<String> getFoodTypeData()
     {
         String url = "https://appetyte.herokuapp.com/android/getAllFoodtypes";
         String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));
         ArrayList<String> foodtypes = new ArrayList<>();
+        foodtypes.add("Cualquiera");
         try {
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0; i < jsonArray.length(); i++)

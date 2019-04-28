@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
+import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.model.Restaurant;
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -36,6 +37,8 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,6 +53,7 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
     double latitude = -83.9112765;
     List<Restaurant> restaurantList;
     private MixpanelAPI mixpanelAPI;
+    String nombreRestaurante, calificacion, distancia, precio, tipoComida;
 
 
     @Override
@@ -58,34 +62,11 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
         setContentView(R.layout.activity_resultado);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        longitude = location.getLongitude();
-        latitude = location.getLatitude();
+        getResults();
 
         mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
         mixpanelAPI.track(this.getClass().getName());
         mixpanelAPI.flush();
-
-        String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
-        String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));
-        JSONArray jsonArray = new JSONArray();
-        restaurantList = new ArrayList<>();
-        try{
-            jsonArray = new JSONArray(result);
-            Restaurant r1;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                r1 = new Restaurant();
-                JSONObject restaurant = jsonArray.getJSONObject(i);
-                r1.setName(restaurant.getString("name"));
-                r1.setLat(restaurant.getDouble("latitudepos"));
-                r1.setLongitude(restaurant.getDouble("longitudepos"));
-                r1.setPrice(restaurant.getString("price"));
-                r1.setId(restaurant.getInt("idrestaurant"));
-                restaurantList.add(r1);
-            }
-        }catch (Exception ignored){}
-
 
 
 
@@ -197,6 +178,53 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
         }
     }
 
+
+    private void getResults(){
+        Intent intent = getIntent();
+        nombreRestaurante = intent.getStringExtra("nombreRestaurante");
+        calificacion = intent.getStringExtra("calificacion").toLowerCase();
+        distancia = intent.getStringExtra("distancia").toLowerCase();
+        precio = intent.getStringExtra("precio").toLowerCase();
+        tipoComida = intent.getStringExtra("tipo");
+        latitude = intent.getDoubleExtra("latitude",latitude);
+        longitude = intent.getDoubleExtra("longitude",longitude);
+
+
+        String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        if(!nombreRestaurante.equals(""))
+            nameValuePairs.add(new BasicNameValuePair("name", nombreRestaurante));
+        if(!precio.equals("cualquiera"))
+            nameValuePairs.add(new BasicNameValuePair("price", precio));
+        if(!calificacion.equals("cualquiera"))
+            nameValuePairs.add(new BasicNameValuePair("score", calificacion));
+        if(!distancia.equals("cualquiera")){
+            nameValuePairs.add(new BasicNameValuePair("distance", distancia));
+            nameValuePairs.add(new BasicNameValuePair("latitudepos", Double.toString(latitude)));
+            nameValuePairs.add(new BasicNameValuePair("longitudepos", Double.toString(longitude)));
+        }
+        if(!tipoComida.toLowerCase().equals("cualquiera"))
+            nameValuePairs.add(new BasicNameValuePair("footype", tipoComida));
+
+        String result = LectorHttpResponse.leer(GestorPostRequest.postData(url,nameValuePairs));
+        JSONArray jsonArray = new JSONArray();
+        restaurantList = new ArrayList<>();
+        try{
+            jsonArray = new JSONArray(result);
+            Restaurant r1;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                r1 = new Restaurant();
+                JSONObject restaurant = jsonArray.getJSONObject(i);
+                r1.setName(restaurant.getString("name"));
+                r1.setLat(restaurant.getDouble("latitudepos"));
+                r1.setLongitude(restaurant.getDouble("longitudepos"));
+                r1.setPrice(restaurant.getString("price"));
+                r1.setId(restaurant.getInt("idrestaurant"));
+                restaurantList.add(r1);
+            }
+        }catch (Exception ignored){}
+    }
+
     @Override
     public void onExplanationNeeded(List<String> permissionsToExplain) {
         Toast.makeText(this, R.string.mapbox_attributionTelemetryMessage, Toast.LENGTH_LONG).show();
@@ -226,9 +254,15 @@ public class ResultadoActivity extends AppCompatActivity implements PermissionsL
 
     public void getListView(View view){
 
-        Intent listview = new Intent(getApplicationContext(), ResultListView.class);
-        startActivity(listview);
-
+        Intent newScreen = new Intent(getApplicationContext(), ResultListView.class);
+        newScreen.putExtra("precio",precio);
+        newScreen.putExtra("nombreRestaurante",nombreRestaurante);
+        newScreen.putExtra("calificacion",calificacion);
+        newScreen.putExtra("tipo",tipoComida);
+        newScreen.putExtra("latitude",latitude);
+        newScreen.putExtra("longitude",longitude);
+        newScreen.putExtra("distancia",distancia);
+        startActivity(newScreen);
 
     }
 

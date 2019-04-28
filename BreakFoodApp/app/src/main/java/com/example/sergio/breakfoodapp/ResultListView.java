@@ -9,10 +9,13 @@ import android.view.View;
 
 import com.example.sergio.breakfoodapp.adapters.RestaurantAdapter;
 import com.example.sergio.breakfoodapp.http.GestorGetRequest;
+import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.model.Restaurant;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,21 +29,53 @@ public class ResultListView extends AppCompatActivity {
     RestaurantAdapter adapter;
     List<Restaurant> restaurantList;
     private MixpanelAPI mixpanelAPI;
-
+    double longitude = 9.8560621;
+    double latitude = -83.9112765;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_list_view);
-
         restaurantRecyclerView = findViewById(R.id.restarant_recycler_view);
-
         mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
         mixpanelAPI.track("Result Activity");
         mixpanelAPI.flush();
 
+        getResults();
+
+        adapter = new RestaurantAdapter(restaurantList, this);
+        restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        restaurantRecyclerView.setAdapter(adapter);
+    }
+
+    private void getResults(){
+        Intent intent = getIntent();
+        String nombreRestaurante = intent.getStringExtra("nombreRestaurante");
+        String calificacion = intent.getStringExtra("calificacion").toLowerCase();
+        String distancia = intent.getStringExtra("distancia").toLowerCase();
+        String precio = intent.getStringExtra("precio").toLowerCase();
+        String tipoComida = intent.getStringExtra("tipo");
+        latitude = intent.getDoubleExtra("latitude",latitude);
+        longitude = intent.getDoubleExtra("longitude",longitude);
+
+
         String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
-        String result = LectorHttpResponse.leer(GestorGetRequest.getData(url));
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        if(!nombreRestaurante.equals(""))
+            nameValuePairs.add(new BasicNameValuePair("name", nombreRestaurante));
+        if(!precio.equals("cualquiera"))
+            nameValuePairs.add(new BasicNameValuePair("price", precio));
+        if(!calificacion.equals("cualquiera"))
+            nameValuePairs.add(new BasicNameValuePair("score", calificacion));
+        if(!distancia.equals("cualquiera")){
+            nameValuePairs.add(new BasicNameValuePair("distance", distancia));
+            nameValuePairs.add(new BasicNameValuePair("latitudepos", Double.toString(latitude)));
+            nameValuePairs.add(new BasicNameValuePair("longitudepos", Double.toString(longitude)));
+        }
+        if(!tipoComida.toLowerCase().equals("cualquiera"))
+            nameValuePairs.add(new BasicNameValuePair("footype", tipoComida));
+
+        String result = LectorHttpResponse.leer(GestorPostRequest.postData(url,nameValuePairs));
         JSONArray jsonArray = new JSONArray();
         restaurantList = new ArrayList<>();
         try{
@@ -60,16 +95,8 @@ public class ResultListView extends AppCompatActivity {
                 r1.setScore(restaurant.getDouble("realscore"));
                 restaurantList.add(r1);
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        adapter = new RestaurantAdapter(restaurantList, this);
-        restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        restaurantRecyclerView.setAdapter(adapter);
+        }catch (Exception ignored){}
     }
-
-
 
     public void search(View view){
         //Crea el intent (nueva ventana)
