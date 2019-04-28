@@ -59,7 +59,7 @@ public class ResultListView extends AppCompatActivity {
         longitude = intent.getDoubleExtra("longitude",longitude);
 
 
-        String url = "https://appetyte.herokuapp.com/android/getRestaurantes";
+        String url = "https://appetyte.herokuapp.com/android/buscarRestaurante";
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         if(!nombreRestaurante.equals(""))
             nameValuePairs.add(new BasicNameValuePair("name", nombreRestaurante));
