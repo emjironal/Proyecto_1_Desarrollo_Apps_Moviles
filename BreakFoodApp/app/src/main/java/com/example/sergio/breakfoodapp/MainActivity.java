@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
@@ -21,6 +24,8 @@ import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.model.Restaurant;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.HttpResponse;
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtSignUp, txtRecuperar;
     private MixpanelAPI mixpanelAPI;
     private EditText correo,contrasena;
+    private CallbackManager callbackManager;
+    LoginButton loginButton;
 
     public static final String MIXPANEL_TOKEN = "2e8bdc478fb999b0ffdfb0a8b06673ff";
 
@@ -51,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inicio);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
         correo = (EditText)findViewById(R.id.etCorreoInicio);
         contrasena = (EditText)findViewById(R.id.etContraInicio);
@@ -76,6 +86,35 @@ public class MainActivity extends AppCompatActivity {
 
         txtRecuperar=(TextView)findViewById(R.id.txtInicioRecuperar);
         txtRecuperar.setOnClickListener(recuperar);
+
+
+
+        callbackManager = CallbackManager.Factory.create();
+
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email");
+        // If using in a fragment
+        //loginButton.setFragment();
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
     }
 
     @Override
@@ -94,6 +133,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this,RegistroActivity.class));
         }
     };
+
+    public void signWithFacebook(View view){
+
+
+
+    }
 
 
 
