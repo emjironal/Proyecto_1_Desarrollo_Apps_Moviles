@@ -54,8 +54,7 @@ public class BuscadorActivity extends AbsRuntimePermission {
         mixpanelAPI.flush();
 
         requestAppPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                        Manifest.permission.ACCESS_COARSE_LOCATION},
                 R.string.msg,
                 PERMISSIONS_REQUEST_MAP);
 

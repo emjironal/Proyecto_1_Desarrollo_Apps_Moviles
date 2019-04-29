@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.example.sergio.breakfoodapp.Controller;
 import com.example.sergio.breakfoodapp.GestorImagenes;
 import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
+import com.example.sergio.breakfoodapp.gestorfirebase.GestorImagenesFirebase;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,13 +49,13 @@ import java.util.List;
 
 public class AgregarImagenRestaurante extends AppCompatActivity
 {
+    private static final int PICK_IMAGE = 100;
     private ImageView imgVistaPrevia;
     private ArrayList<Bitmap> imagenes;
     private ArrayList<String> stringAdapter;
     private ArrayAdapter<String> adapter;
-    private static final int SELECT_FILE = 1;
     private Integer idrestaurant;
-    private ArrayList<FileInputStream> files;
+    private ArrayList<Uri> files;
     private MixpanelAPI mixpanelAPI;
 
     @Override
@@ -78,8 +80,7 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bitmap bitmap = imagenes.get(position);
-                imgVistaPrevia.setImageBitmap(bitmap);
+                imgVistaPrevia.setImageURI(files.get((position)));
             }
         });
     }
@@ -91,10 +92,8 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
         for(int i = 0; i < files.size(); i++)
         {
-            //TODO: subir urls en vez de files
-            FileInputStream file = files.get(i);
-            String nombreImagen = stringAdapter.get(i);
-            subirImagenFireBase(file, nombreImagen);
+            GestorImagenesFirebase.uploadLocalImage(this, "restaurantes/" + idrestaurant.toString(), files.get(i));
+            agregarImagenDB(files.get(i).getLastPathSegment());
         }
         HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
         String resultStr = LectorHttpResponse.leer(response);
@@ -122,96 +121,51 @@ public class AgregarImagenRestaurante extends AppCompatActivity
 
     public void btnAgregaImagenListener(View view)
     {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(
-                Intent.createChooser(intent, "Seleccione una imagen"),
-                SELECT_FILE);
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
     }
 
-    //Creado por Bárbara Gutiérrez
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        Uri selectedImage;
-        switch (requestCode)
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
         {
-            case SELECT_FILE:
-                if (resultCode == Activity.RESULT_OK)
-                {
-                    selectedImage = imageReturnedIntent.getData();
-                    if(selectedImage != null)
-                    {
-                        //Obtiene el path de la imagen
-                        String filePath = selectedImage.getPath();
-                        //Obtiene la imagen en bitmap
-                        File file = new File(filePath);
-                        Bitmap bitmap = null;
-                        InputStream imageStream = null;
-                        try {
-                            imageStream = getContentResolver().openInputStream(
-                                    selectedImage);
-                            FileInputStream fileInputStream = (FileInputStream) imageStream;
-                            Picasso.with(getApplicationContext()).load(selectedImage).into(imgVistaPrevia);
-                            imagenes.add(bitmap); //Agrega la imagen al array de imagenes
-                            files.add(fileInputStream);
-                            stringAdapter.add(file.getName()); //obtiene el nombre de la imagen y lo agrega
-                            adapter.notifyDataSetChanged(); //actualiza el list view
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                break;
-            default:
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            Uri imageUri = data.getData();
+            if(imageUri != null)
+            {
+                Picasso.with(getApplicationContext()).load(imageUri).into(imgVistaPrevia);
+                files.add(imageUri);
+                stringAdapter.add(imageUri.getLastPathSegment()); //obtiene el nombre de la imagen y lo agrega
+                adapter.notifyDataSetChanged(); //actualiza el list view
+            }
         }
     }
 
-    public void subirImagenFireBase(FileInputStream file, final String fileName)
+    public void agregarImagenDB(String fileNameWithExtension)
     {
-        final GestorImagenes gImg = GestorImagenes.getInstance();
-        UploadTask uploadTask = gImg.subirFoto(file,"restaurantes", fileName);
-        uploadTask.addOnSuccessListener(AgregarImagenRestaurante.this, new OnSuccessListener<UploadTask.TaskSnapshot>()
+        String url = "https://appetyte.herokuapp.com/android/agregarImagenes";
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
+        nameValuePairs.add(new BasicNameValuePair("pictures", fileNameWithExtension));
+        HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
+        String resultStr = LectorHttpResponse.leer(response);
+        try
         {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+            JSONObject jsonObject = new JSONObject(resultStr);
+            boolean result = jsonObject.getBoolean("result");
+            if(result)
             {
-                gImg.getUriFoto("restaurantes", fileName).addOnSuccessListener(new OnSuccessListener<Uri>()
-                {
-                    @Override
-                    public void onSuccess(Uri uri)
-                    {
-                        String url = "https://appetyte.herokuapp.com/android/agregarImagenes";
-                        List<NameValuePair> nameValuePairs = new ArrayList<>();
-                        nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
-                        nameValuePairs.add(new BasicNameValuePair("pictures", uri.toString()));
-                        HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
-                        String resultStr = LectorHttpResponse.leer(response);
-                        try
-                        {
-                            JSONObject jsonObject = new JSONObject(resultStr);
-                            boolean result = jsonObject.getBoolean("result");
-                            if(result)
-                            {
-                                Toast.makeText(AgregarImagenRestaurante.this, "Las imágenes se agregaron", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(AgregarImagenRestaurante.this, "Las imágenes no se agregaron", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        catch (JSONException e)
-                        {
-                            Log.e("Error", e.getMessage());
-                            Toast.makeText(AgregarImagenRestaurante.this, "Error", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                Toast.makeText(AgregarImagenRestaurante.this, "Las imágenes se agregaron", Toast.LENGTH_SHORT).show();
             }
-        });
+            else
+            {
+                Toast.makeText(AgregarImagenRestaurante.this, "Las imágenes no se agregaron", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (JSONException e)
+        {
+            Log.e("Error", e.getMessage());
+            Toast.makeText(AgregarImagenRestaurante.this, "Error", Toast.LENGTH_SHORT).show();
+        }
     }
 }
