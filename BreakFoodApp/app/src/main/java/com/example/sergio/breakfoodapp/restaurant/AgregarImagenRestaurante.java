@@ -1,9 +1,7 @@
 package com.example.sergio.breakfoodapp.restaurant;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -16,34 +14,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.sergio.breakfoodapp.BitmapManager;
-import com.example.sergio.breakfoodapp.Controller;
-import com.example.sergio.breakfoodapp.GestorImagenes;
-import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.gestorfirebase.GestorImagenesFirebase;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.UploadTask;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +34,6 @@ public class AgregarImagenRestaurante extends AppCompatActivity
 {
     private static final int PICK_IMAGE = 100;
     private ImageView imgVistaPrevia;
-    private ArrayList<Bitmap> imagenes;
     private ArrayList<String> stringAdapter;
     private ArrayAdapter<String> adapter;
     private Integer idrestaurant;
@@ -63,10 +45,9 @@ public class AgregarImagenRestaurante extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_imagen_restaurante);
-        idrestaurant = getIntent().getIntExtra("idrestaurant",0);
+        idrestaurant = getIntent().getIntExtra("idrestaurant",1);
 
         imgVistaPrevia = findViewById(R.id.imgVistaPrevia);
-        imagenes = new ArrayList<>();
         stringAdapter = new ArrayList<>();
         files = new ArrayList<>();
 
