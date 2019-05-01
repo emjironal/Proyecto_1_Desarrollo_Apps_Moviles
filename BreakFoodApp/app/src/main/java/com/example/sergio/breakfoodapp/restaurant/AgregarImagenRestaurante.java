@@ -1,5 +1,6 @@
 package com.example.sergio.breakfoodapp.restaurant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.sergio.breakfoodapp.PrintMessage;
 import com.example.sergio.breakfoodapp.R;
 import com.example.sergio.breakfoodapp.gestorfirebase.GestorImagenesFirebase;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
@@ -74,7 +76,8 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         for(int i = 0; i < files.size(); i++)
         {
             GestorImagenesFirebase.uploadLocalImage(this, "restaurantes/" + idrestaurant.toString(), files.get(i));
-            agregarImagenDB(files.get(i).getLastPathSegment());
+            //agregarImagenDB(files.get(i).getLastPathSegment());
+            nameValuePairs.add(new BasicNameValuePair("pictures", files.get(i).getLastPathSegment()));
         }
         HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
         String resultStr = LectorHttpResponse.leer(response);
@@ -85,7 +88,6 @@ public class AgregarImagenRestaurante extends AppCompatActivity
             if(result)
             {
                 Toast.makeText(this, "Las imágenes se agregaron", Toast.LENGTH_SHORT).show();
-                finish();
             }
             else
             {
@@ -109,16 +111,21 @@ public class AgregarImagenRestaurante extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
         {
             Uri imageUri = data.getData();
             if(imageUri != null)
             {
-                Picasso.with(getApplicationContext()).load(imageUri).into(imgVistaPrevia);
+                imgVistaPrevia.setImageURI(imageUri);
                 files.add(imageUri);
                 stringAdapter.add(imageUri.getLastPathSegment()); //obtiene el nombre de la imagen y lo agrega
                 adapter.notifyDataSetChanged(); //actualiza el list view
             }
+        }
+        else
+        {
+            PrintMessage.printMessage(this, "Seleccionar imagen", "No seleccionó una imagen");
         }
     }
 
