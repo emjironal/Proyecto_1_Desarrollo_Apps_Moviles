@@ -19,6 +19,8 @@ import com.example.sergio.breakfoodapp.http.GestorGetRequest;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.example.sergio.breakfoodapp.location.SingleShotLocationProvider;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.apache.http.NameValuePair;
@@ -172,6 +174,8 @@ public class BuscadorActivity extends AbsRuntimePermission {
 
 
     public void salir(){
+
+        LoginManager.getInstance().logOut();
         //Crea el intent (nueva ventana)
         Intent newScreen = new Intent(BuscadorActivity.this, MainActivity.class);
         //Inicia la nueva ventana

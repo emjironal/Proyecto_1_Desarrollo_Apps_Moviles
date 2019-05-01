@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.example.sergio.breakfoodapp.http.GestorPostRequest;
 import com.example.sergio.breakfoodapp.http.LectorHttpResponse;
 import com.facebook.*;
@@ -39,34 +44,17 @@ public class RegistroActivity extends AppCompatActivity {
     private Button btnEnter, btnRegistro;
     private EditText correo,contrasena,confirmacion;
     private MixpanelAPI mixpanelAPI;
-
-   /* private CallbackManager callbackManager;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
+    private CallbackManager callbackManager;
     LoginButton loginButton;
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode,resultCode,data);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Profile profile=Profile.getCurrentProfile();
-        Datos(profile);
-    }
-    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-        /*callbackManager=CallbackManager.Factory.create();
-        loginButton=(LoginButton)findViewById(R.id.login_button);*/
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
 
         mixpanelAPI = MixpanelAPI.getInstance(getApplicationContext(),getString(R.string.mixpanel_token));
@@ -94,59 +82,47 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
-       /* loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+        callbackManager = CallbackManager.Factory.create();
+
+
+        loginButton = (LoginButton) findViewById(R.id.login_button2);
+        loginButton.setReadPermissions("email");
+        // If using in a fragment
+        //loginButton.setFragment();
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = loginResult.getAccessToken();
-
-                Profile profile = Profile.getCurrentProfile();
-                Datos(profile);
-                accessTokenTracker=new AccessTokenTracker() {
-                    @Override
-                    protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-
-
-                    }
-                };
-                profileTracker=new ProfileTracker() {
-                    @Override
-                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-
-                        Datos(currentProfile);
-                    }
-                };
-
-                accessTokenTracker.startTracking();
-                profileTracker.startTracking();
-
-                loginButton.setReadPermissions("user_friends");
-                loginButton.setReadPermissions("public_profile");
-
-
-
+                goMainScreen();
             }
 
             @Override
             public void onCancel() {
-
+                Toast.makeText(getApplicationContext(), R.string.error_field_required, Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onError(FacebookException error) {
 
+            @Override
+            public void onError(FacebookException exception) {
+                Toast.makeText(getApplicationContext(), R.string.error_field_required, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    private void goMainScreen(){
 
-    private void Datos(Profile perfil){
-        if(perfil != null){
-            String nom=perfil.getName();
+        Intent intent = new Intent(this, BuscadorActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
-        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
 
-*/
     }
 
 
