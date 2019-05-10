@@ -13,8 +13,11 @@ import android.widget.ImageView;
 
 import com.example.sergio.breakfoodapp.BitmapManager;
 import com.example.sergio.breakfoodapp.GestorImagenes;
+import com.example.sergio.breakfoodapp.ImageDownloader;
 import com.example.sergio.breakfoodapp.ObjectSerializer;
 import com.example.sergio.breakfoodapp.R;
+import com.example.sergio.breakfoodapp.gestorfirebase.GestorImagenesFirebase;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,20 +25,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>{
 
     List<String> images;
     private Context context;
     private View view;
+    Integer idrestaurant;
 
 
     public GalleryAdapter() {
     }
 
-    public GalleryAdapter(List<String> images, Context context) {
+    public GalleryAdapter(List<String> images, Context context, int idrestaurant) {
         this.images = images;
         this.context = context;
+        this.idrestaurant = idrestaurant;
     }
 
     @NonNull
@@ -46,12 +52,25 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GalleryViewHolder galleyViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final GalleryViewHolder galleyViewHolder, int i) {
         String imagen = images.get(i);
-        //TODO: 
-        Uri imageURI = GestorImagenes.getInstance().getUriFoto("14","gege").getResult();
-        Bitmap bitmap = getImageBitmap(imagen);
-        galleyViewHolder.imageView.setImageBitmap(bitmap);
+        //TODO:
+        GestorImagenesFirebase.getUrlFoto("restaurantes/"+idrestaurant.toString(),imagen).addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri)
+            {
+                ImageDownloader img = new ImageDownloader();
+                try {
+                    Bitmap bitmap = img.execute(uri.toString()).get();
+                    galleyViewHolder.imageView.setImageBitmap(bitmap);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     @Override

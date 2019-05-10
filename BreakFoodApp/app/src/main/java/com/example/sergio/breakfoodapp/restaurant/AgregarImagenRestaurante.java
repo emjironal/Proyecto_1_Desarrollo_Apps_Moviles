@@ -75,31 +75,9 @@ public class AgregarImagenRestaurante extends AppCompatActivity
         nameValuePairs.add(new BasicNameValuePair("idrestaurant", idrestaurant.toString()));
         for(int i = 0; i < files.size(); i++)
         {
+            agregarImagenDB(files.get(i).getLastPathSegment());
             GestorImagenesFirebase.uploadLocalImage(this, "restaurantes/" + idrestaurant.toString(), files.get(i));
-            //agregarImagenDB(files.get(i).getLastPathSegment());
-            nameValuePairs.add(new BasicNameValuePair("pictures", files.get(i).getLastPathSegment()));
         }
-        HttpResponse response = GestorPostRequest.postData(url, nameValuePairs);
-        String resultStr = LectorHttpResponse.leer(response);
-        try
-        {
-            JSONObject jsonObject = new JSONObject(resultStr);
-            boolean result = jsonObject.getBoolean("result");
-            if(result)
-            {
-                Toast.makeText(this, "Las imágenes se agregaron", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(this, "Las imágenes no se agregaron", Toast.LENGTH_SHORT).show();
-            }
-        }
-        catch (JSONException e)
-        {
-            Log.e("Error", e.getMessage());
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     public void btnAgregaImagenListener(View view)

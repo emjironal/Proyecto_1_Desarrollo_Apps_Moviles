@@ -69,7 +69,7 @@ public class RestaurantGalleryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        adapter = new GalleryAdapter(images, getApplicationContext());
+        adapter = new GalleryAdapter(images, getApplicationContext(), idrestaurant);
 
         RecyclerView recyclerView = findViewById(R.id.gallery_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
